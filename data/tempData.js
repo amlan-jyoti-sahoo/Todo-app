@@ -16,7 +16,7 @@ export default tempData = [
         completed: false,
       },
       {
-        title: 'Book a Flight',
+        title: 'Book a hotel',
         completed: false,
       },
     ],

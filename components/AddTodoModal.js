@@ -16,6 +16,7 @@ import tempData from '../data/tempData';
 
 function AddTodoModal({navigation}) {
   const [todoText, setTodoText] = useState('');
+
   function closeModal() {
     navigation.goBack();
   }
