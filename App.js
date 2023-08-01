@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AddListModal from './components/AddListModal';
 import AddTodoModal from './components/AddTodoModal';
 
+//hello git testing
 function App() {
   const RootStack = createNativeStackNavigator();
 
