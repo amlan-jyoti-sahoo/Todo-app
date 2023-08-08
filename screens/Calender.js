@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Agenda} from 'react-native-calendars';
-import AddTodoModal from '../components/AddTodoModal';
+import Todo from '../components/Todo';
 
 const timeToString = time => {
   const date = new Date(time);
@@ -18,7 +18,8 @@ const timeToString = time => {
 };
 
 const Calender = () => {
-  // const [currentDate, setCurrentDate] = useState('');
+  const [currentDate, setCurrentDate] = useState('');
+
   const [items, setItems] = useState({
     '2023-08-08': [
       {name: 'Amlan', cookies: true},
@@ -33,15 +34,16 @@ const Calender = () => {
   const [todoText, setTodoText] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
-  // const getCurrentDate = () => {
-  //   var date = new Date().getDate(); //Current Date
-  //   var month = new Date().getMonth() + 1; //Current Month
-  //   var year = new Date().getFullYear(); //Current Year
-  //   var hours = new Date().getHours(); //Current Hours
-  //   var min = new Date().getMinutes(); //Current Minutes
-  //   var sec = new Date().getSeconds(); //Current Seconds
-  //   setCurrentDate(date + '-' + month + '-' + year);
-  // };
+  useEffect(() => {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    // var hours = new Date().getHours(); //Current Hours
+    // var min = new Date().getMinutes(); //Current Minutes
+    // var sec = new Date().getSeconds(); //Current Seconds
+    setCurrentDate(year + '-' + month + '-' + date);
+    console.log(currentDate);
+  }, []);
 
   const loadItems = day => {
     setSelectedDate(day.dateString);
@@ -50,11 +52,7 @@ const Calender = () => {
 
   const renderItem = item => {
     if (item.name) {
-      return (
-        <View style={styles.itemContainer}>
-          <Text>{item.name}</Text>
-        </View>
-      );
+      return <Todo>{item.name}</Todo>;
     }
     return (
       <View style={styles.itemContainer}>
@@ -83,7 +81,7 @@ const Calender = () => {
         [selectedDate]: [{name: todoText, cookies: true}],
       }));
     }
-
+    setTodoText('');
     console.log(items);
   }
 
@@ -94,9 +92,9 @@ const Calender = () => {
         renderItem={renderItem}
         showOnlySelectedDayItems
         // loadItems={loadItems}
-        // selected={selectedDate}
+        selected={'2023-08-08'}
         loadItemsForMonth={loadItems}
-        // renderDay={renderDay}
+        // renderDay={loadItems}
         // showClosingKnob={true}
         // renderItem={renderItem}
         // testID={testIDs.agenda.CONTAINER}

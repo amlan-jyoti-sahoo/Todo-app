@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../styles/Colors';
 import tempData from '../data/tempData';
 
-function AddTodoModal({navigation}) {
+function TodoRender({navigation}) {
   const backgroundColors = [
     '#5CD859',
     '#24A6D9',
@@ -84,7 +84,7 @@ function AddTodoModal({navigation}) {
   );
 }
 
-export default AddTodoModal;
+export default TodoRender;
 
 const styles = StyleSheet.create({
   container: {

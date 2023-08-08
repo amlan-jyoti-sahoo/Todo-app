@@ -1,32 +1,39 @@
 import {StyleSheet, Text, View, Button} from 'react-native';
 import React from 'react';
-import TodoScreen from './screens/TodoScreen';
 import Calendar from './screens/Calender';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import AddListModal from './components/AddListModal';
-import AddTodoModal from './components/AddTodoModal';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Setting from './screens/Setting';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-//hello git testing
+//Screens
+
+const calendar = 'Calendar';
+const setting = 'Setting';
+
 function App() {
-  const RootStack = createNativeStackNavigator();
+  const BottomTab = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
-      <RootStack.Navigator>
-        <RootStack.Screen name="Calender" component={Calendar} />
-        <RootStack.Screen name="Todo" component={TodoScreen} />
-        <RootStack.Screen
-          name="AddListModal"
-          component={AddListModal}
-          options={{presentation: 'modal', headerShown: 'false'}}
-        />
-        {/* <RootStack.Screen
-          name="AddTodoModal"
-          component={AddTodoModal}
-          options={{presentation: 'modal', headerShown: 'false'}}
-        /> */}
-      </RootStack.Navigator>
+      <BottomTab.Navigator
+        initialRouteName={Calendar}
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+            let rn = route.name;
+
+            if (rn === calendar) {
+              iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (rn === setting) {
+              iconName = focused ? 'settings' : 'settings-outline';
+            }
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}>
+        <BottomTab.Screen name="Calendar" component={Calendar} />
+        <BottomTab.Screen name="Setting" component={Setting} />
+      </BottomTab.Navigator>
     </NavigationContainer>
   );
 }
