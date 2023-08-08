@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View, Button} from 'react-native';
 import React from 'react';
 import TodoScreen from './screens/TodoScreen';
+import Calendar from './screens/Calender';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import AddListModal from './components/AddListModal';
@@ -13,17 +14,18 @@ function App() {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
+        <RootStack.Screen name="Calender" component={Calendar} />
         <RootStack.Screen name="Todo" component={TodoScreen} />
         <RootStack.Screen
           name="AddListModal"
           component={AddListModal}
           options={{presentation: 'modal', headerShown: 'false'}}
         />
-        <RootStack.Screen
+        {/* <RootStack.Screen
           name="AddTodoModal"
           component={AddTodoModal}
           options={{presentation: 'modal', headerShown: 'false'}}
-        />
+        /> */}
       </RootStack.Navigator>
     </NavigationContainer>
   );
