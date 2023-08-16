@@ -16,6 +16,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import tempData from '../data/tempData';
 
 import Modal from 'react-native-modal';
+import {RadioButton} from 'react-native-paper';
 
 // const timeToString = time => {
 //   const date = new Date(time);
@@ -38,6 +39,8 @@ const AllTodoScreen = () => {
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDateModalVisible, setDateModalVisible] = useState(false);
+  const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
+  const [checked, setChecked] = React.useState('norepeat');
 
   const renderItem = item => {
     return <Todo>{item.todo}</Todo>;
@@ -45,8 +48,21 @@ const AllTodoScreen = () => {
 
   const renderEmptyDate = () => {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Todo Not Added yet!</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        }}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 20,
+            fontWeight: '400',
+            marginTop: 20,
+          }}>
+          Todo Not Added yet!
+        </Text>
       </View>
     );
   };
@@ -57,6 +73,9 @@ const AllTodoScreen = () => {
 
   const toggleDateModal = () => {
     setDateModalVisible(!isDateModalVisible);
+  };
+  const toggleRepeatModal = () => {
+    setRepeatModalVisible(!isRepeatModalVisible);
   };
 
   function AddTodoHandler() {
@@ -157,7 +176,10 @@ const AllTodoScreen = () => {
       </Modal>
 
       {/* InnerCalendar Date Picker */}
-      <Modal isVisible={isDateModalVisible}>
+      <Modal
+        isVisible={isDateModalVisible}
+        animationIn="fadeIn"
+        animationOut="fadeOut">
         <TouchableOpacity
           style={styles.closeIconContainer}
           onPress={toggleDateModal}>
@@ -182,7 +204,7 @@ const AllTodoScreen = () => {
             }}
           />
           <View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={toggleRepeatModal} animationIn="fadeIn">
               <View
                 style={{
                   flexDirection: 'row',
@@ -225,6 +247,62 @@ const AllTodoScreen = () => {
               <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleDateModal}>
+              <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
+                OK
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Repeat Calendar Modal */}
+      <Modal
+        isVisible={isRepeatModalVisible}
+        animationIn="fadeIn"
+        animationOut="fadeOut">
+        <TouchableOpacity
+          style={styles.closeIconContainer}
+          onPress={toggleRepeatModal}>
+          <Icon
+            style={styles.closeIcon}
+            name="close"
+            size={30}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
+        <View style={styles.RepeatCalendarContainer}>
+          <View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <RadioButton
+                value="norepeat"
+                status={checked === 'norepeat' ? 'checked' : 'unchecked'}
+                onPress={() => setChecked('norepeat')}
+              />
+              <Text style={{color: 'black'}}>No Repeat</Text>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <RadioButton
+                value="daily"
+                status={checked === 'daily' ? 'checked' : 'unchecked'}
+                onPress={() => setChecked('daily')}
+              />
+              <Text style={{color: 'black'}}>Daily</Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              padding: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                toggleRepeatModal();
+              }}>
+              <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleRepeatModal}>
               <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
                 OK
               </Text>
@@ -278,6 +356,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     bottom: 20,
+  },
+  RepeatCalendarContainer: {
+    backgroundColor: 'white',
+    padding: 10,
   },
 });
 
