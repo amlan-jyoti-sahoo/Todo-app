@@ -21,7 +21,6 @@ function Todo({children, checkBoxClicked}) {
         animationDuration={0.2}
         tintColors={{true: 'grey', false: 'black'}}
       />
-
       <Text
         style={toggleCheckBox ? styles.strikeText : styles.normalText}
         key={children + random}>
@@ -34,10 +33,9 @@ function Todo({children, checkBoxClicked}) {
 export default Todo;
 
 const styles = StyleSheet.create({
-  todoContainer: {
-    marginHorizontal: 50,
-    color: '#000',
-    justifyContent: 'center',
+  todoSublistContainer: {
+    flexDirection: 'row',
+    margin: 5,
     alignItems: 'center',
   },
   normalText: {
@@ -51,10 +49,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
     color: 'gray',
-  },
-  todoSublistContainer: {
-    flexDirection: 'row',
-    margin: 10,
-    alignItems: 'center',
   },
 });
