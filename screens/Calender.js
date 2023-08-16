@@ -10,6 +10,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {Agenda} from 'react-native-calendars';
 import Todo from '../components/Todo';
+import FloatingButton from '../components/UI/FloatingButton';
 
 const timeToString = time => {
   const date = new Date(time);
@@ -122,6 +123,7 @@ const Calender = () => {
         onChangeText={setTodoText}
       />
       <Button title="add todo" onPress={AddTodoHandler} />
+      <FloatingButton />
     </View>
   );
 };
