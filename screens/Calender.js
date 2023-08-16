@@ -11,27 +11,17 @@ import React, {useEffect, useState} from 'react';
 import {Agenda} from 'react-native-calendars';
 import Todo from '../components/Todo';
 import FloatingButton from '../components/UI/FloatingButton';
+import tempData from '../data/tempData';
 
-const timeToString = time => {
-  const date = new Date(time);
-  //   console.log(date.toISOString().split('T')[0]);
-  return date.toISOString().split('T')[0];
-};
+// const timeToString = time => {
+//   const date = new Date(time);
+//   //   console.log(date.toISOString().split('T')[0]);
+//   return date.toISOString().split('T')[0];
+// };
 
 const Calender = () => {
   const [currentDate, setCurrentDate] = useState('');
-
-  const [items, setItems] = useState({
-    '2023-08-08': [
-      {name: 'Amlan', cookies: true},
-      {name: 'Jyoti', cookies: true},
-    ],
-    '2023-08-07': [
-      {name: 'date 7', cookies: true},
-      {name: 'Jyoti', cookies: true},
-    ],
-  });
-
+  const [items, setItems] = useState(tempData);
   const [todoText, setTodoText] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -39,34 +29,24 @@ const Calender = () => {
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
     var year = new Date().getFullYear(); //Current Year
-    // var hours = new Date().getHours(); //Current Hours
-    // var min = new Date().getMinutes(); //Current Minutes
-    // var sec = new Date().getSeconds(); //Current Seconds
     setCurrentDate(year + '-' + month + '-' + date);
-    console.log(currentDate);
   }, []);
 
-  const loadItems = day => {
-    setSelectedDate(day.dateString);
-    console.log('🚀 ~ file: Calender.js:48 ~ loadItems ~ day.dateString:', day);
+  const renderItem = item => {
+    return <Todo>{item.name}</Todo>;
   };
 
-  const renderItem = item => {
-    if (item.name) {
-      return <Todo>{item.name}</Todo>;
-    }
+  const renderEmptyDate = () => {
     return (
-      <View style={styles.itemContainer}>
-        <Text>No data available</Text>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Todo Not Added yet!</Text>
       </View>
     );
   };
 
   function AddTodoHandler() {
-    console.log(todoText);
-    console.log(selectedDate);
     const date = `'${selectedDate}'`;
-    console.log(date);
+    console.log('🚀 ~ file: Calender.js:65 ~ AddTodoHandler ~ date:', date);
     console.log(items.hasOwnProperty(selectedDate));
     if (items.hasOwnProperty(selectedDate)) {
       setItems(prevItems => ({
@@ -91,15 +71,40 @@ const Calender = () => {
       <Agenda
         items={items}
         renderItem={renderItem}
+        onDayPress={day => setSelectedDate(day.dateString)}
         showOnlySelectedDayItems
+        renderEmptyData={renderEmptyDate}
+        selected={currentDate}
+      />
+      <TextInput
+        placeholder="enter text"
+        value={todoText}
+        onChangeText={setTodoText}
+      />
+      <Button title="add todo" onPress={AddTodoHandler} />
+      <FloatingButton />
+    </View>
+  );
+};
+
+export default Calender;
+
+const styles = StyleSheet.create({});
+
+{
+  /* <Agenda
+        items={items}
+        renderItem={renderItem}
+        onDayPress={day => setSelectedDate(day.dateString)}
+        showOnlySelectedDayItems
+        renderEmptyData={renderEmptyDate}
         // loadItems={loadItems}
-        selected={'2023-08-08'}
-        loadItemsForMonth={loadItems}
+        selected={currentDate}
+        // loadItemsForMonth={loadItems}
         // renderDay={loadItems}
         // showClosingKnob={true}
         // renderItem={renderItem}
         // testID={testIDs.agenda.CONTAINER}
-        // renderEmptyDate={this.renderEmptyDate}
         // rowHasChanged={rowHasChanged}
         // markingType={'period'}
         // markedDates={{
@@ -116,18 +121,5 @@ const Calender = () => {
 
         // hideExtraDays={true}
         // reservationsKeyExtractor={this.reservationsKeyExtractor}
-      />
-      <TextInput
-        placeholder="enter text"
-        value={todoText}
-        onChangeText={setTodoText}
-      />
-      <Button title="add todo" onPress={AddTodoHandler} />
-      <FloatingButton />
-    </View>
-  );
-};
-
-export default Calender;
-
-const styles = StyleSheet.create({});
+      /> */
+}
