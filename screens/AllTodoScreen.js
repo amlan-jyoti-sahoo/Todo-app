@@ -24,7 +24,7 @@ import Modal from 'react-native-modal';
 //   return date.toISOString().split('T')[0];
 // };
 
-const Calender = () => {
+const AllTodoScreen = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [items, setItems] = useState(tempData);
   const [todoText, setTodoText] = useState('');
@@ -43,7 +43,7 @@ const Calender = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const renderItem = item => {
-    return <Todo>{item.name}</Todo>;
+    return <Todo>{item.todo}</Todo>;
   };
 
   const renderEmptyDate = () => {
@@ -167,7 +167,7 @@ const Calender = () => {
   );
 };
 
-export default Calender;
+export default AllTodoScreen;
 
 const styles = StyleSheet.create({
   FloatingButton: {

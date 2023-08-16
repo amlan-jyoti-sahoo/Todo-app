@@ -1,10 +1,10 @@
 export default tempData = {
   '2023-08-08': [
-    {name: 'Amlan', cookies: true},
-    {name: 'Jyoti', cookies: true},
+    {todo: 'Study', description: 'study time table'},
+    {todo: 'trip', description: 'trip to goa'},
   ],
   '2023-08-07': [
-    {name: 'date 7', cookies: true},
-    {name: 'Jyoti', cookies: true},
+    {todo: 'marketing', description: 'brought vegetables'},
+    {todo: 'pg rent', description: 'give pg rent'},
   ],
 };
