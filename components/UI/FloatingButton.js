@@ -11,84 +11,15 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import Modal from 'react-native-modal';
 import {Calendar} from 'react-native-calendars';
 
-const FloatingButton = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
+const FloatingButton = ({selectedDate, setSelectedDate}) => {
   const [isDateModalVisible, setDateModalVisible] = useState(false);
-  const [todoText, setTodoText] = useState('');
-  const [todoDescText, setTodoDescText] = useState('');
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
   const toggleDateModal = () => {
     setDateModalVisible(!isDateModalVisible);
   };
 
-  const sendButtonHandler = () => {
-    toggleModal();
-  };
   return (
     <View style={styles.container}>
-      <Modal isVisible={isModalVisible}>
-        <TouchableOpacity
-          style={styles.closeIconContainer}
-          onPress={toggleModal}>
-          <Icon
-            style={styles.closeIcon}
-            name="close"
-            size={30}
-            color="#ffffff"
-          />
-        </TouchableOpacity>
-        <View style={styles.modalContent}>
-          <TextInput
-            style={{marginRight: 20, color: 'white'}}
-            placeholder="Enter your todo..."
-            placeholderTextColor="#636363"
-            value={todoText}
-            onChangeText={setTodoText}
-          />
-          <TextInput
-            style={{marginRight: 20, color: 'white'}}
-            placeholder="Description"
-            placeholderTextColor="#636363"
-            value={todoDescText}
-            onChangeText={setTodoDescText}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                width: 150,
-              }}>
-              <TouchableOpacity onPress={toggleDateModal}>
-                <Icon name={'calendar'} size={24} color="#00c3ff" />
-              </TouchableOpacity>
-              <Text style={{color: '#00c3ff'}}>Today</Text>
-              <Icon name={'flag'} size={24} color="#a7a7a7" />
-            </View>
-            <View
-              style={{
-                width: 40,
-                height: 30,
-                backgroundColor: '#00c3ff',
-                borderRadius: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity onPress={sendButtonHandler}>
-                <Icon name={'send'} size={22} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
       <Modal isVisible={isDateModalVisible}>
         <TouchableOpacity
           style={styles.closeIconContainer}
@@ -101,7 +32,18 @@ const FloatingButton = () => {
           />
         </TouchableOpacity>
         <View style={styles.CalendarContainer}>
-          <Calendar />
+          <Calendar
+            onDayPress={day => {
+              setSelectedDate(day.dateString);
+            }}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+              },
+            }}
+          />
           <View>
             <TouchableOpacity>
               <View
@@ -139,16 +81,20 @@ const FloatingButton = () => {
               justifyContent: 'flex-end',
               padding: 10,
             }}>
-            <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
-            <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
-              OK
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                toggleDateModal();
+              }}>
+              <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleDateModal}>
+              <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
+                OK
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.button} onPress={toggleModal}>
-        <Icon name="add" size={20} color="white" />
-      </TouchableOpacity>
     </View>
   );
 };
