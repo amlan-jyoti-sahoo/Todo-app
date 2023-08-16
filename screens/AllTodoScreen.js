@@ -8,9 +8,8 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Agenda} from 'react-native-calendars';
+import {Agenda, Calendar} from 'react-native-calendars';
 import Todo from '../components/Todo';
-import FloatingButton from '../components/UI/FloatingButton';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -25,11 +24,6 @@ import Modal from 'react-native-modal';
 // };
 
 const AllTodoScreen = () => {
-  const [currentDate, setCurrentDate] = useState('');
-  const [items, setItems] = useState(tempData);
-  const [todoText, setTodoText] = useState('');
-  const [todoDescText, setTodoDescText] = useState('');
-
   useEffect(() => {
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
@@ -37,10 +31,13 @@ const AllTodoScreen = () => {
     setCurrentDate(year + '-' + month + '-' + date);
     console.log(currentDate);
   }, []);
-
+  const [currentDate, setCurrentDate] = useState('');
+  const [items, setItems] = useState(tempData);
+  const [todoText, setTodoText] = useState('');
+  const [todoDescText, setTodoDescText] = useState('');
   const [selectedDate, setSelectedDate] = useState(currentDate);
-
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isDateModalVisible, setDateModalVisible] = useState(false);
 
   const renderItem = item => {
     return <Todo>{item.todo}</Todo>;
@@ -58,6 +55,10 @@ const AllTodoScreen = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const toggleDateModal = () => {
+    setDateModalVisible(!isDateModalVisible);
+  };
+
   function AddTodoHandler() {
     const date = `'${selectedDate}'`;
     console.log('🚀 ~ file: Calender.js:65 ~ AddTodoHandler ~ date:', date);
@@ -67,13 +68,13 @@ const AllTodoScreen = () => {
         ...prevItems,
         [selectedDate]: [
           ...prevItems[selectedDate],
-          {name: todoText, cookies: true},
+          {todo: todoText, description: todoDescText},
         ],
       }));
     } else {
       setItems(prevItems => ({
         ...prevItems,
-        [selectedDate]: [{name: todoText, cookies: true}],
+        [selectedDate]: [{todo: todoText, description: todoDescText}],
       }));
     }
     setTodoText('');
@@ -132,8 +133,7 @@ const AllTodoScreen = () => {
                 justifyContent: 'space-evenly',
                 width: 150,
               }}>
-              {/* <TouchableOpacity onPress={toggleDateModal}> */}
-              <TouchableOpacity>
+              <TouchableOpacity onPress={toggleDateModal}>
                 <Icon name={'calendar'} size={24} color="#00c3ff" />
               </TouchableOpacity>
               <Text style={{color: '#00c3ff'}}>{selectedDate}</Text>
@@ -155,11 +155,85 @@ const AllTodoScreen = () => {
           </View>
         </View>
       </Modal>
-      <FloatingButton
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-      />
 
+      {/* InnerCalendar Date Picker */}
+      <Modal isVisible={isDateModalVisible}>
+        <TouchableOpacity
+          style={styles.closeIconContainer}
+          onPress={toggleDateModal}>
+          <Icon
+            style={styles.closeIcon}
+            name="close"
+            size={30}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
+        <View style={styles.CalendarContainer}>
+          <Calendar
+            onDayPress={day => {
+              setSelectedDate(day.dateString);
+            }}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+              },
+            }}
+          />
+          <View>
+            <TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  borderRadius: 10,
+                  padding: 10,
+                  backgroundColor: '#f2efef',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Icon
+                    style={{marginRight: 10}}
+                    name="repeat"
+                    size={30}
+                    color="skyblue"
+                  />
+                  <Text style={styles.constantText}> Set Repeat</Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={styles.constantText}>None</Text>
+                  <AntIcon
+                    style={{marginLeft: 20}}
+                    name="right"
+                    size={16}
+                    color="skyblue"
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              padding: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                toggleDateModal();
+              }}>
+              <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleDateModal}>
+              <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
+                OK
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Floating Button */}
       <TouchableOpacity style={styles.FloatingButton} onPress={toggleModal}>
         <Icon name="add" size={20} color="#ffffff" />
       </TouchableOpacity>
