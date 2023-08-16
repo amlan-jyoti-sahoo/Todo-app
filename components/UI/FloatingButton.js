@@ -7,15 +7,21 @@ import {
   Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import Modal from 'react-native-modal';
+import {Calendar} from 'react-native-calendars';
 
 const FloatingButton = () => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isDateModalVisible, setDateModalVisible] = useState(false);
   const [todoText, setTodoText] = useState('');
   const [todoDescText, setTodoDescText] = useState('');
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const toggleDateModal = () => {
+    setDateModalVisible(!isDateModalVisible);
   };
 
   const sendButtonHandler = () => {
@@ -61,12 +67,9 @@ const FloatingButton = () => {
                 justifyContent: 'space-evenly',
                 width: 150,
               }}>
-              <Icon
-                name={'calendar'}
-                size={24}
-                color="#00c3ff"
-                // onPress={DatePicker}
-              />
+              <TouchableOpacity onPress={toggleDateModal}>
+                <Icon name={'calendar'} size={24} color="#00c3ff" />
+              </TouchableOpacity>
               <Text style={{color: '#00c3ff'}}>Today</Text>
               <Icon name={'flag'} size={24} color="#a7a7a7" />
             </View>
@@ -83,6 +86,63 @@ const FloatingButton = () => {
                 <Icon name={'send'} size={22} color="white" />
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal isVisible={isDateModalVisible}>
+        <TouchableOpacity
+          style={styles.closeIconContainer}
+          onPress={toggleDateModal}>
+          <Icon
+            style={styles.closeIcon}
+            name="close"
+            size={30}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
+        <View style={styles.CalendarContainer}>
+          <Calendar />
+          <View>
+            <TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  borderRadius: 10,
+                  padding: 10,
+                  backgroundColor: '#f2efef',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Icon
+                    style={{marginRight: 10}}
+                    name="repeat"
+                    size={30}
+                    color="skyblue"
+                  />
+                  <Text style={styles.constantText}> Set Repeat</Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={styles.constantText}>None</Text>
+                  <AntIcon
+                    style={{marginLeft: 20}}
+                    name="right"
+                    size={16}
+                    color="skyblue"
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              padding: 10,
+            }}>
+            <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
+            <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
+              OK
+            </Text>
           </View>
         </View>
       </Modal>
@@ -118,6 +178,13 @@ const styles = StyleSheet.create({
     width: 50,
     right: 0,
     top: 0,
+  },
+  CalendarContainer: {
+    backgroundColor: 'white',
+    padding: 10,
+  },
+  constantText: {
+    color: 'black',
   },
 });
 
