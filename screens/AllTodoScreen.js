@@ -17,6 +17,8 @@ import tempData from '../data/tempData';
 
 import Modal from 'react-native-modal';
 import {RadioButton} from 'react-native-paper';
+import FloatingButton from '../components/UI/FloatingButton';
+import Colors from '../styles/Colors';
 
 // const timeToString = time => {
 //   const date = new Date(time);
@@ -109,8 +111,27 @@ const AllTodoScreen = () => {
         onDayPress={day => setSelectedDate(day.dateString)}
         showOnlySelectedDayItems
         renderEmptyData={renderEmptyDate}
-        selected={currentDate}
+        selected={selectedDate}
+        theme={{
+          reservationsBackgroundColor: Colors.Primary500,
+          calendarBackground: Colors.Primary800, //agenda background
+          agendaKnobColor: Colors.Secondary500, // knob color
+          backgroundColor: Colors.Primary800, // background color below agenda
+          agendaTodayColor: Colors.white, // today in list
+          monthTextColor: Colors.white, // name in calendar
+          textDefaultColor: Colors.white,
+          todayBackgroundColor: Colors.white,
+          dayTextColor: Colors.white, // calendar day
+          selectedDayBackgroundColor: Colors.Secondary500, // calendar sel date
+          // agendaDayNumColor: 'white', // day number
+          // agendaDayTextColor: 'white', // day name
+          // textSectionTitleColor: colors.primary,
+          // dotColor: "white", // dots
+          // textDisabledColor: "red"
+        }}
       />
+
+      {/* Add todo modal screen */}
       <Modal
         isVisible={isModalVisible}
         animationIn="fadeIn"
@@ -122,19 +143,19 @@ const AllTodoScreen = () => {
             style={styles.closeIcon}
             name="close"
             size={30}
-            color="#ffffff"
+            color={Colors.white}
           />
         </TouchableOpacity>
         <View style={styles.modalContent}>
           <TextInput
-            style={{marginRight: 20, color: '#000000'}}
+            style={{marginRight: 20, color: Colors.PrimaryTextColor}}
             placeholder="Enter your todo..."
             placeholderTextColor="#636363"
             value={todoText}
             onChangeText={setTodoText}
           />
           <TextInput
-            style={{marginRight: 20, color: '#000000'}}
+            style={{marginRight: 20, color: Colors.PrimaryTextColor}}
             placeholder="Description"
             placeholderTextColor="#636363"
             value={todoDescText}
@@ -153,24 +174,24 @@ const AllTodoScreen = () => {
                 width: 150,
               }}>
               <TouchableOpacity onPress={toggleDateModal}>
-                <Icon name={'calendar'} size={24} color="#00c3ff" />
+                <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
               </TouchableOpacity>
-              <Text style={{color: '#00c3ff'}}>{selectedDate}</Text>
+              <Text style={{color: Colors.Secondary500}}>{selectedDate}</Text>
               <Icon name={'flag'} size={24} color="#a7a7a7" />
             </View>
-            <View
-              style={{
-                width: 40,
-                height: 30,
-                backgroundColor: '#00c3ff',
-                borderRadius: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity onPress={AddTodoHandler}>
+            <TouchableOpacity onPress={AddTodoHandler}>
+              <View
+                style={{
+                  width: 40,
+                  height: 30,
+                  backgroundColor: Colors.Secondary500,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <Icon name={'send'} size={22} color="white" />
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -202,6 +223,17 @@ const AllTodoScreen = () => {
                 selectedDotColor: 'orange',
               },
             }}
+            theme={{
+              backgroundColor: Colors.Primary500,
+              calendarBackground: Colors.Primary500,
+              textSectionTitleColor: '#b6c1cd',
+              selectedDayBackgroundColor: '#00adf5',
+              selectedDayTextColor: '#ffffff',
+              todayTextColor: '#00adf5',
+              dayTextColor: Colors.white,
+              // textDisabledColor: '',
+              monthTextColor: Colors.white,
+            }}
           />
           <View>
             <TouchableOpacity onPress={toggleRepeatModal} animationIn="fadeIn">
@@ -211,14 +243,14 @@ const AllTodoScreen = () => {
                   justifyContent: 'space-between',
                   borderRadius: 10,
                   padding: 10,
-                  backgroundColor: '#f2efef',
+                  backgroundColor: Colors.Primary800,
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Icon
                     style={{marginRight: 10}}
                     name="repeat"
                     size={30}
-                    color="skyblue"
+                    color={Colors.Secondary500}
                   />
                   <Text style={styles.constantText}> Set Repeat</Text>
                 </View>
@@ -228,7 +260,7 @@ const AllTodoScreen = () => {
                     style={{marginLeft: 20}}
                     name="right"
                     size={16}
-                    color="skyblue"
+                    color={Colors.Secondary500}
                   />
                 </View>
               </View>
@@ -244,10 +276,17 @@ const AllTodoScreen = () => {
               onPress={() => {
                 toggleDateModal();
               }}>
-              <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
+              <Text style={{color: Colors.Secondary500, fontSize: 16}}>
+                CANCEL
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleDateModal}>
-              <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
+              <Text
+                style={{
+                  color: Colors.Secondary500,
+                  marginLeft: 40,
+                  fontSize: 16,
+                }}>
                 OK
               </Text>
             </TouchableOpacity>
@@ -312,9 +351,7 @@ const AllTodoScreen = () => {
       </Modal>
 
       {/* Floating Button */}
-      <TouchableOpacity style={styles.FloatingButton} onPress={toggleModal}>
-        <Icon name="add" size={20} color="#ffffff" />
-      </TouchableOpacity>
+      <FloatingButton onPress={toggleModal} />
     </View>
   );
 };
@@ -322,19 +359,8 @@ const AllTodoScreen = () => {
 export default AllTodoScreen;
 
 const styles = StyleSheet.create({
-  FloatingButton: {
-    backgroundColor: '#00c3ff',
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-    position: 'absolute',
-    right: 10,
-    bottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   modalContent: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.Primary500,
     padding: 20,
     borderRadius: 10,
   },
@@ -346,11 +372,11 @@ const styles = StyleSheet.create({
     top: 0,
   },
   CalendarContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.Primary500,
     padding: 10,
   },
   constantText: {
-    color: 'black',
+    color: Colors.white,
   },
   floatingButton: {
     position: 'absolute',
@@ -358,7 +384,7 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   RepeatCalendarContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.Primary800,
     padding: 10,
   },
 });

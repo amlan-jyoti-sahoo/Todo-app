@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import tempData from '../data/tempData';
 import CheckBox from '@react-native-community/checkbox';
+import Colors from '../styles/Colors';
 
 function Todo({children, checkBoxClicked}) {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -19,7 +20,7 @@ function Todo({children, checkBoxClicked}) {
         value={toggleCheckBox}
         onValueChange={newValue => setToggleCheckBox(newValue)}
         animationDuration={0.2}
-        tintColors={{true: 'grey', false: 'black'}}
+        tintColors={{true: 'grey', false: 'grey'}}
       />
       <Text
         style={toggleCheckBox ? styles.strikeText : styles.normalText}
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   normalText: {
     marginLeft: 10,
-    color: 'black',
+    color: Colors.PrimaryTextColor,
     fontSize: 18,
   },
   strikeText: {

@@ -8,6 +8,7 @@ import Setting from './screens/Setting';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HabitTackerScreen from './screens/HabitTackerScreen';
 import TodoEditScreen from './screens/TodoEditScreen';
+import Colors from './styles/Colors';
 
 //Screens
 
@@ -24,6 +25,11 @@ function App() {
       <BottomTab.Navigator
         initialRouteName={AllTodoScreen}
         screenOptions={({route}) => ({
+          activeTintColor: '#F60081',
+          tabBarStyle: {
+            backgroundColor: Colors.Primary800,
+            borderTopColor: 'transparent',
+          },
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
             let rn = route.name;
@@ -37,22 +43,49 @@ function App() {
             }
             return <Icon name={iconName} size={size} color={color} />;
           },
+          headerTitleStyle: {
+            color: Colors.white,
+          },
+          headerStyle: {
+            backgroundColor: Colors.Primary800,
+          },
           tabBarShowLabel: false,
-          tabBarActiveTintColor: 'skyblue',
+          tabBarActiveTintColor: Colors.Secondary500,
         })}>
-        <BottomTab.Screen name="AllTodoScreen" component={AllTodoScreen} />
+        <BottomTab.Screen
+          name="AllTodoScreen"
+          component={AllTodoScreen}
+          options={{
+            headerTitle: 'Todo',
+          }}
+        />
         <BottomTab.Screen
           name="HabitTackerScreen"
           component={HabitTackerScreen}
+          options={{
+            headerTitle: 'Habit',
+          }}
         />
-        <BottomTab.Screen name="Setting" component={Setting} />
+        <BottomTab.Screen
+          name="Setting"
+          component={Setting}
+          options={{
+            headerTitle: 'Settings',
+          }}
+        />
       </BottomTab.Navigator>
     );
   }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={({route}) => ({
+          headerStyle: {
+            backgroundColor: 'black',
+            borderTopColor: 'transparent',
+          },
+        })}>
         <Stack.Screen
           name="BottomTabScreens"
           component={BottomTabScreens}
