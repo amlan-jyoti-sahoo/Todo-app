@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Agenda, Calendar} from 'react-native-calendars';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {RadioButton} from 'react-native-paper';
+import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
+import moment from 'moment';
 
 import Todo from '../components/Todo';
 import tempData from '../data/tempData';
@@ -20,24 +22,14 @@ import Month from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
-// const timeToString = time => {
-//   const date = new Date(time);
-//   //   console.log(date.toISOString().split('T')[0]);
-//   return date.toISOString().split('T')[0];
-// };
-
 const AllTodoScreen = () => {
   useEffect(() => {
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    if ((month > 0 && month < 10) || (date > 0 && date < 10)) {
-      setCurrentDate(year + '-' + '0' + month + '-' + date);
-    } else {
-      setCurrentDate(year + '-' + month + '-' + date);
-    }
+    setCurrentDate(moment().toISOString().split('T')[0]);
   }, []);
-  const [currentDate, setCurrentDate] = useState('');
+
+  const [currentDate, setCurrentDate] = useState(
+    moment().toISOString().split('T')[0],
+  );
   const [items, setItems] = useState(tempData);
   const [todoText, setTodoText] = useState('');
   const [todoDescText, setTodoDescText] = useState('');
@@ -89,6 +81,20 @@ const AllTodoScreen = () => {
     toggleModal();
   }
 
+  const [date, setDate] = useState(new Date());
+  const [week, setWeek] = useState(new Date().toISOString());
+  // const ref = useRef < WeekCalendarRef > null;
+
+  const markedDates = {};
+  Object.keys(items).forEach(date => {
+    markedDates[date] = {
+      marked: true,
+      type: 'dot',
+      // background: '#858594',
+      color: 'blue' /* Customize as needed */,
+    };
+  });
+
   return (
     <View style={{flex: 1, backgroundColor: Colors.Primary800}}>
       <View style={{flexDirection: 'row'}}>
@@ -97,6 +103,32 @@ const AllTodoScreen = () => {
         </TouchableOpacity>
         {selectedDate ? <Text>{selectedDate}</Text> : <Text>Choose Date</Text>}
       </View>
+      <WeekCalendar
+        // ref={ref}
+        autoSelect="markedDate"
+        dayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+        // renderDayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+        // style={{backgroundColor: Colors.Primary800}}
+        // style={{backgroundColor: 'yellow'}}
+        markedDates={markedDates}
+        selected={selectedDate}
+        onSelectDate={(value, source) => {
+          console.log(
+            '🚀 ~ file: AllTodoScreen.js:116 ~ AllTodoScreen ~ source:',
+            source,
+          );
+          setSelectedDate(`${value}`);
+        }}
+        onWeekChange={w => {
+          console.log(
+            '🚀 ~ file: AllTodoScreen.js:119 ~ AllTodoScreen ~ w:',
+            w,
+          );
+          setWeek(w);
+          // setSelectedDate(w);
+        }}
+        // theme={{selected: 'black', header: 'black', dot: 'red'}}
+      />
       <Modal
         isVisible={isCalendarModalVisible}
         animationIn="fadeIn"
@@ -115,6 +147,7 @@ const AllTodoScreen = () => {
         <Calendar
           onDayPress={day => {
             setSelectedDate(day.dateString);
+            toggleCalendarModal();
           }}
           markedDates={{
             [selectedDate]: {
