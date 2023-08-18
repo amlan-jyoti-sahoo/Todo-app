@@ -4,8 +4,8 @@ import tempData from '../data/tempData';
 import CheckBox from '@react-native-community/checkbox';
 import Colors from '../styles/Colors';
 
-function Todo({children, checkBoxClicked}) {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+function Todo({todo, onToggle}) {
+  const [toggleCheckBox, setToggleCheckBox] = useState(todo.completed);
 
   function checkBoxClicked() {
     if (toggleCheckBox) return true;
@@ -15,17 +15,17 @@ function Todo({children, checkBoxClicked}) {
   return (
     <View style={styles.todoSublistContainer}>
       <CheckBox
-        disabled={false}
+        // disabled={false}
         style={styles.checkBox}
-        value={toggleCheckBox}
-        onValueChange={newValue => setToggleCheckBox(newValue)}
+        value={todo.completed ? true : false}
+        onValueChange={onToggle(todo.id)}
         animationDuration={0.2}
         tintColors={{true: 'grey', false: 'grey'}}
       />
       <Text
         style={toggleCheckBox ? styles.strikeText : styles.normalText}
-        key={children + random}>
-        {children}
+        key={todo.id}>
+        {todo.todo}
       </Text>
     </View>
   );

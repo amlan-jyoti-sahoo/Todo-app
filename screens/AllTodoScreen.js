@@ -1,6 +1,4 @@
 import {
-  Button,
-  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Agenda, Calendar} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
@@ -26,6 +24,7 @@ import Colors from '../styles/Colors';
 const AllTodoScreen = ({navigation}) => {
   useEffect(() => {
     setCurrentDate(moment().toISOString().split('T')[0]);
+    console.log(moment());
   }, []);
 
   useLayoutEffect(() => {
@@ -39,6 +38,9 @@ const AllTodoScreen = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
+          <TouchableOpacity onPress={toggleCalendarModal}>
+            <Icon name={'calendar'} size={24} color={Colors.white} />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               setSelectedDate(currentDate);
@@ -47,6 +49,7 @@ const AllTodoScreen = ({navigation}) => {
               style={{
                 fontSize: 16,
                 fontWeight: '600',
+                marginLeft: 20,
                 color: Colors.PrimaryTextColor,
               }}>
               Today
@@ -91,10 +94,6 @@ const AllTodoScreen = ({navigation}) => {
     setCalendarModalVisible(!isCalendarModalVisible);
   };
 
-  const renderItem = item => {
-    if (item.status === false) return <Todo>{item.todo}</Todo>;
-  };
-
   function AddTodoHandler() {
     const date = `'${selectedDate}'`;
     console.log('🚀 ~ file: Calender.js:65 ~ AddTodoHandler ~ date:', date);
@@ -104,14 +103,14 @@ const AllTodoScreen = ({navigation}) => {
         ...prevItems,
         [selectedDate]: [
           ...prevItems[selectedDate],
-          {todo: todoText, description: todoDescText, status: false},
+          {todo: todoText, description: todoDescText, completed: false},
         ],
       }));
     } else {
       setItems(prevItems => ({
         ...prevItems,
         [selectedDate]: [
-          {todo: todoText, description: todoDescText, status: false},
+          {todo: todoText, description: todoDescText, completed: false},
         ],
       }));
     }
@@ -120,13 +119,23 @@ const AllTodoScreen = ({navigation}) => {
     toggleModal();
   }
 
+  const toggleTodo = id => {
+    // const newData = {...items};
+    // const todos = newData[selectedDate];
+    // const updatedTodos = todos.map(todo =>
+    //   todo.id === id ? {...todo, completed: !todo.completed} : todo,
+    // );
+    // newData[selectedDate] = updatedTodos;
+    // setItems(...items, newData);
+  };
+
   const markedDates = {};
   Object.keys(items).forEach(date => {
     markedDates[date] = {
       marked: true,
       type: 'dot',
       // background: '#858594',
-      color: 'blue' /* Customize as needed */,
+      color: 'red',
     };
   });
 
@@ -135,12 +144,6 @@ const AllTodoScreen = ({navigation}) => {
 
   return (
     <View style={styles.rootContainer}>
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={toggleCalendarModal}>
-          <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
-        </TouchableOpacity>
-        {selectedDate ? <Text>{selectedDate}</Text> : <Text>Choose Date</Text>}
-      </View>
       <WeekCalendar
         // ref={ref}
         autoSelect="markedDate"
@@ -165,32 +168,48 @@ const AllTodoScreen = ({navigation}) => {
           setWeek(w);
           // setSelectedDate(w);
         }}
-        // theme={{selected: 'black', header: 'black', dot: 'red'}}
+        theme={{
+          selected: {backgroundColor: Colors.Secondary500, color: Colors.white},
+        }}
       />
-      <View style={{backgroundColor: '#000000', height: 440, width: 400}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {items[selectedDate] ? (
-            <View style={styles.todoInCompleteContainer}>
-              <Text>{`${curDay} ${curMonth}`}</Text>
-              <FlatList
-                data={items[selectedDate]}
-                renderItem={({item}) => renderItem(item)}
-                keyExtractor={(item, index) => `${index}`}
-              />
+      <ScrollView style={{flex: 1}}>
+        {items[selectedDate] ? (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+            }}>
+            <View style={styles.todoRenderContainer}>
+              <Text style={{}}>{`${curDay} ${curMonth}`}</Text>
+              {items[selectedDate]
+                .filter(todo => !todo.completed)
+                .map(todo => (
+                  <Todo todo={todo} onToggle={toggleTodo} />
+                ))}
             </View>
-          ) : (
-            <Text
-              style={{
-                color: '#f9f1f1',
-                fontSize: 20,
-                fontWeight: '400',
-                marginTop: 20,
-              }}>
-              Todo Not Added yet!
-            </Text>
-          )}
-        </View>
-      </View>
+            {items[selectedDate].filter(todo => todo.completed) !== null ? (
+              <View style={styles.todoRenderContainer}>
+                <Text style={styles.containerTitle}>Completed</Text>
+                {items[selectedDate]
+                  .filter(todo => todo.completed)
+                  .map(todo => (
+                    <Todo todo={todo} onToggle={toggleTodo} />
+                  ))}
+              </View>
+            ) : null}
+          </View>
+        ) : (
+          <Text
+            style={{
+              color: '#f9f1f1',
+              fontSize: 20,
+              fontWeight: '400',
+              marginTop: 20,
+            }}>
+            Todo Not Added yet!
+          </Text>
+        )}
+      </ScrollView>
 
       {/* Home screen Calendar Modal */}
       <Modal
@@ -417,7 +436,7 @@ const AllTodoScreen = ({navigation}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="norepeat"
-                status={checked === 'norepeat' ? 'checked' : 'unchecked'}
+                completed={checked === 'norepeat' ? 'checked' : 'unchecked'}
                 onPress={() => setChecked('norepeat')}
               />
               <Text style={{color: 'black'}}>No Repeat</Text>
@@ -425,7 +444,7 @@ const AllTodoScreen = ({navigation}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="daily"
-                status={checked === 'daily' ? 'checked' : 'unchecked'}
+                completed={checked === 'daily' ? 'checked' : 'unchecked'}
                 onPress={() => setChecked('daily')}
               />
               <Text style={{color: 'black'}}>Daily</Text>
@@ -471,13 +490,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
   },
-  todoInCompleteContainer: {
-    backgroundColor: Colors.Primary500,
+  todoRenderContainer: {
     width: '100%',
-    margin: 10,
-    padding: 10,
-    marginRight: 10,
+    backgroundColor: Colors.Primary500,
+    marginTop: 10,
     borderRadius: 10,
+    padding: 10,
   },
   closeIconContainer: {
     position: 'absolute',
