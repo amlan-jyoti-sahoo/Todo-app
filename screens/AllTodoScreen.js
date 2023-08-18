@@ -16,6 +16,7 @@ import {RadioButton} from 'react-native-paper';
 
 import Todo from '../components/Todo';
 import tempData from '../data/tempData';
+import Month from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
@@ -43,6 +44,7 @@ const AllTodoScreen = () => {
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDateModalVisible, setDateModalVisible] = useState(false);
+  const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
   const [checked, setChecked] = React.useState('norepeat');
 
@@ -55,6 +57,9 @@ const AllTodoScreen = () => {
   };
   const toggleRepeatModal = () => {
     setRepeatModalVisible(!isRepeatModalVisible);
+  };
+  const toggleCalendarModal = () => {
+    setCalendarModalVisible(!isCalendarModalVisible);
   };
 
   const renderItem = item => {
@@ -86,29 +91,51 @@ const AllTodoScreen = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: Colors.Primary800}}>
-      <Calendar
-        onDayPress={day => {
-          setSelectedDate(day.dateString);
-        }}
-        markedDates={{
-          [selectedDate]: {
-            selected: true,
-            disableTouchEvent: true,
-            selectedDotColor: '#000000',
-          },
-        }}
-        theme={{
-          backgroundColor: Colors.Primary500,
-          calendarBackground: Colors.Primary500,
-          textSectionTitleColor: '#b6c1cd',
-          selectedDayBackgroundColor: '#00adf5',
-          selectedDayTextColor: '#ffffff',
-          todayTextColor: '#00adf5',
-          dayTextColor: Colors.white,
-          // textDisabledColor: '',
-          monthTextColor: Colors.white,
-        }}
-      />
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity onPress={toggleCalendarModal}>
+          <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
+        </TouchableOpacity>
+        {selectedDate ? <Text>{selectedDate}</Text> : <Text>Choose Date</Text>}
+      </View>
+      <Modal
+        isVisible={isCalendarModalVisible}
+        animationIn="fadeIn"
+        animationOut="fadeOut">
+        <TouchableOpacity
+          style={styles.closeIconContainer}
+          onPress={toggleCalendarModal}>
+          <Icon
+            style={styles.closeIcon}
+            name="close"
+            size={30}
+            color={Colors.white}
+          />
+        </TouchableOpacity>
+
+        <Calendar
+          onDayPress={day => {
+            setSelectedDate(day.dateString);
+          }}
+          markedDates={{
+            [selectedDate]: {
+              selected: true,
+              disableTouchEvent: true,
+              selectedDotColor: '#000000',
+            },
+          }}
+          theme={{
+            backgroundColor: Colors.Primary500,
+            calendarBackground: Colors.Primary500,
+            textSectionTitleColor: '#b6c1cd',
+            selectedDayBackgroundColor: '#00adf5',
+            selectedDayTextColor: '#ffffff',
+            todayTextColor: '#00adf5',
+            dayTextColor: Colors.white,
+            // textDisabledColor: '',
+            monthTextColor: Colors.white,
+          }}
+        />
+      </Modal>
 
       <View style={{backgroundColor: '#000000', height: 440, width: 400}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
