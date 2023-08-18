@@ -9,14 +9,13 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Agenda, Calendar} from 'react-native-calendars';
-import Todo from '../components/Todo';
-
-import Icon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import tempData from '../data/tempData';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {RadioButton} from 'react-native-paper';
+
+import Todo from '../components/Todo';
+import tempData from '../data/tempData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
@@ -47,10 +46,6 @@ const AllTodoScreen = () => {
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
   const [checked, setChecked] = React.useState('norepeat');
 
-  const renderItem = item => {
-    return <Todo>{item.todo}</Todo>;
-  };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -60,6 +55,10 @@ const AllTodoScreen = () => {
   };
   const toggleRepeatModal = () => {
     setRepeatModalVisible(!isRepeatModalVisible);
+  };
+
+  const renderItem = item => {
+    return <Todo>{item.todo}</Todo>;
   };
 
   function AddTodoHandler() {
@@ -87,32 +86,6 @@ const AllTodoScreen = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: Colors.Primary800}}>
-      {/* <Agenda
-        items={items}
-        renderItem={renderItem}
-        onDayPress={day => setSelectedDate(day.dateString)}
-        showOnlySelectedDayItems
-        renderEmptyData={renderEmptyDate}
-        selected={selectedDate}
-        theme={{
-          reservationsBackgroundColor: Colors.Primary500,
-          calendarBackground: Colors.Primary800, //agenda background
-          agendaKnobColor: Colors.Secondary500, // knob color
-          backgroundColor: Colors.Primary800, // background color below agenda
-          agendaTodayColor: Colors.white, // today in list
-          monthTextColor: Colors.white, // name in calendar
-          textDefaultColor: Colors.white,
-          todayBackgroundColor: Colors.white,
-          dayTextColor: Colors.white, // calendar day
-          selectedDayBackgroundColor: Colors.Secondary500, // calendar sel date
-          // agendaDayNumColor: 'white', // day number
-          // agendaDayTextColor: 'white', // day name
-          // textSectionTitleColor: colors.primary,
-          // dotColor: "white", // dots
-          // textDisabledColor: "red"
-        }}
-      /> */}
-
       <Calendar
         onDayPress={day => {
           setSelectedDate(day.dateString);
@@ -121,7 +94,7 @@ const AllTodoScreen = () => {
           [selectedDate]: {
             selected: true,
             disableTouchEvent: true,
-            selectedDotColor: 'orange',
+            selectedDotColor: '#000000',
           },
         }}
         theme={{
