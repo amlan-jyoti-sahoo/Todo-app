@@ -1,13 +1,14 @@
 import {
   Button,
   FlatList,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {Agenda, Calendar} from 'react-native-calendars';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,10 +23,45 @@ import Month from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
-const AllTodoScreen = () => {
+const AllTodoScreen = ({navigation}) => {
   useEffect(() => {
     setCurrentDate(moment().toISOString().split('T')[0]);
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: curMonth,
+      headerRight: () => (
+        <View
+          style={{
+            flexDirection: 'row',
+            marginRight: 10,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedDate(currentDate);
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '600',
+                color: Colors.PrimaryTextColor,
+              }}>
+              Today
+            </Text>
+          </TouchableOpacity>
+          <Icon
+            style={{marginLeft: 20}}
+            name="ellipsis-vertical"
+            size={20}
+            color={'white'}
+          />
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   const [currentDate, setCurrentDate] = useState(
     moment().toISOString().split('T')[0],
@@ -39,6 +75,7 @@ const AllTodoScreen = () => {
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
   const [checked, setChecked] = React.useState('norepeat');
+  const [week, setWeek] = useState(new Date().toISOString());
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -55,7 +92,7 @@ const AllTodoScreen = () => {
   };
 
   const renderItem = item => {
-    return <Todo>{item.todo}</Todo>;
+    if (item.status === false) return <Todo>{item.todo}</Todo>;
   };
 
   function AddTodoHandler() {
@@ -67,23 +104,21 @@ const AllTodoScreen = () => {
         ...prevItems,
         [selectedDate]: [
           ...prevItems[selectedDate],
-          {todo: todoText, description: todoDescText},
+          {todo: todoText, description: todoDescText, status: false},
         ],
       }));
     } else {
       setItems(prevItems => ({
         ...prevItems,
-        [selectedDate]: [{todo: todoText, description: todoDescText}],
+        [selectedDate]: [
+          {todo: todoText, description: todoDescText, status: false},
+        ],
       }));
     }
     setTodoText('');
     console.log(items);
     toggleModal();
   }
-
-  const [date, setDate] = useState(new Date());
-  const [week, setWeek] = useState(new Date().toISOString());
-  // const ref = useRef < WeekCalendarRef > null;
 
   const markedDates = {};
   Object.keys(items).forEach(date => {
@@ -95,8 +130,11 @@ const AllTodoScreen = () => {
     };
   });
 
+  const curDay = moment(selectedDate).date();
+  const curMonth = Month[moment(selectedDate).month()];
+
   return (
-    <View style={{flex: 1, backgroundColor: Colors.Primary800}}>
+    <View style={styles.rootContainer}>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={toggleCalendarModal}>
           <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
@@ -129,6 +167,32 @@ const AllTodoScreen = () => {
         }}
         // theme={{selected: 'black', header: 'black', dot: 'red'}}
       />
+      <View style={{backgroundColor: '#000000', height: 440, width: 400}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {items[selectedDate] ? (
+            <View style={styles.todoInCompleteContainer}>
+              <Text>{`${curDay} ${curMonth}`}</Text>
+              <FlatList
+                data={items[selectedDate]}
+                renderItem={({item}) => renderItem(item)}
+                keyExtractor={(item, index) => `${index}`}
+              />
+            </View>
+          ) : (
+            <Text
+              style={{
+                color: '#f9f1f1',
+                fontSize: 20,
+                fontWeight: '400',
+                marginTop: 20,
+              }}>
+              Todo Not Added yet!
+            </Text>
+          )}
+        </View>
+      </View>
+
+      {/* Home screen Calendar Modal */}
       <Modal
         isVisible={isCalendarModalVisible}
         animationIn="fadeIn"
@@ -169,30 +233,6 @@ const AllTodoScreen = () => {
           }}
         />
       </Modal>
-
-      <View style={{backgroundColor: '#000000', height: 440, width: 400}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {items[selectedDate] ? (
-            <FlatList
-              data={items[selectedDate]}
-              renderItem={({item}) => renderItem(item)}
-              keyExtractor={(item, index) => `${index}`}
-            />
-          ) : (
-            <Text
-              style={{
-                color: '#f9f1f1',
-                fontSize: 20,
-                fontWeight: '400',
-                marginTop: 20,
-              }}>
-              Todo Not Added yet!
-            </Text>
-          )}
-
-          {/* <Text style={{fontWeight: 'bold'}}>{items[key].todo}: </Text> */}
-        </View>
-      </View>
 
       {/* Add todo modal screen */}
       <Modal
@@ -422,9 +462,21 @@ const AllTodoScreen = () => {
 export default AllTodoScreen;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    backgroundColor: Colors.Primary800,
+  },
   modalContent: {
     backgroundColor: Colors.Primary500,
     padding: 20,
+    borderRadius: 10,
+  },
+  todoInCompleteContainer: {
+    backgroundColor: Colors.Primary500,
+    width: '100%',
+    margin: 10,
+    padding: 10,
+    marginRight: 10,
     borderRadius: 10,
   },
   closeIconContainer: {
@@ -451,36 +503,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-{
-  /* <Agenda
-        items={items}
-        renderItem={renderItem}
-        onDayPress={day => setSelectedDate(day.dateString)}
-        showOnlySelectedDayItems
-        renderEmptyData={renderEmptyDate}
-        // loadItems={loadItems}
-        selected={currentDate}
-        // loadItemsForMonth={loadItems}
-        // renderDay={loadItems}
-        // showClosingKnob={true}
-        // renderItem={renderItem}
-        // testID={testIDs.agenda.CONTAINER}
-        // rowHasChanged={rowHasChanged}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#43515c'},
-        //    '2017-05-09': {textColor: '#43515c'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        // monthFormat={'yyyy'}
-        // theme={{calendarBackground: '#cddce4', agendaKnobColor: 'green'}}
-
-        // hideExtraDays={true}
-        // reservationsKeyExtractor={this.reservationsKeyExtractor}
-      /> */
-}
