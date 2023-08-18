@@ -31,8 +31,11 @@ const AllTodoScreen = () => {
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
     var year = new Date().getFullYear(); //Current Year
-    setCurrentDate(year + '-' + month + '-' + date);
-    console.log(currentDate);
+    if ((month > 0 && month < 10) || (date > 0 && date < 10)) {
+      setCurrentDate(year + '-' + '0' + month + '-' + date);
+    } else {
+      setCurrentDate(year + '-' + month + '-' + date);
+    }
   }, []);
   const [currentDate, setCurrentDate] = useState('');
   const [items, setItems] = useState(tempData);
@@ -46,27 +49,6 @@ const AllTodoScreen = () => {
 
   const renderItem = item => {
     return <Todo>{item.todo}</Todo>;
-  };
-
-  const renderEmptyDate = () => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-        }}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 20,
-            fontWeight: '400',
-            marginTop: 20,
-          }}>
-          Todo Not Added yet!
-        </Text>
-      </View>
-    );
   };
 
   const toggleModal = () => {
@@ -104,8 +86,8 @@ const AllTodoScreen = () => {
   }
 
   return (
-    <View style={{flex: 1}}>
-      <Agenda
+    <View style={{flex: 1, backgroundColor: Colors.Primary800}}>
+      {/* <Agenda
         items={items}
         renderItem={renderItem}
         onDayPress={day => setSelectedDate(day.dateString)}
@@ -129,7 +111,55 @@ const AllTodoScreen = () => {
           // dotColor: "white", // dots
           // textDisabledColor: "red"
         }}
+      /> */}
+
+      <Calendar
+        onDayPress={day => {
+          setSelectedDate(day.dateString);
+        }}
+        markedDates={{
+          [selectedDate]: {
+            selected: true,
+            disableTouchEvent: true,
+            selectedDotColor: 'orange',
+          },
+        }}
+        theme={{
+          backgroundColor: Colors.Primary500,
+          calendarBackground: Colors.Primary500,
+          textSectionTitleColor: '#b6c1cd',
+          selectedDayBackgroundColor: '#00adf5',
+          selectedDayTextColor: '#ffffff',
+          todayTextColor: '#00adf5',
+          dayTextColor: Colors.white,
+          // textDisabledColor: '',
+          monthTextColor: Colors.white,
+        }}
       />
+
+      <View style={{backgroundColor: '#000000', height: 440, width: 400}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {items[selectedDate] ? (
+            <FlatList
+              data={items[selectedDate]}
+              renderItem={({item}) => renderItem(item)}
+              keyExtractor={(item, index) => `${index}`}
+            />
+          ) : (
+            <Text
+              style={{
+                color: '#f9f1f1',
+                fontSize: 20,
+                fontWeight: '400',
+                marginTop: 20,
+              }}>
+              Todo Not Added yet!
+            </Text>
+          )}
+
+          {/* <Text style={{fontWeight: 'bold'}}>{items[key].todo}: </Text> */}
+        </View>
+      </View>
 
       {/* Add todo modal screen */}
       <Modal
