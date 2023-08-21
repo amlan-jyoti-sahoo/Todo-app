@@ -6,15 +6,17 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Setting from './screens/Setting';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HabitTackerScreen from './screens/HabitTackerScreen';
 import TodoEditScreen from './screens/TodoEditScreen';
 import Colors from './styles/Colors';
+import Pomodoro from './screens/Pomodoro';
 
 //Screens
 
 const allTodoScreen = 'AllTodoScreen';
 const habitTackerScreen = 'HabitTackerScreen';
-const setting = 'Setting';
+const pomodoro = 'Pomodoro';
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -38,8 +40,6 @@ function App() {
               iconName = focused ? 'calendar' : 'calendar-outline';
             } else if (rn === habitTackerScreen) {
               iconName = focused ? 'timer' : 'timer-outline';
-            } else if (rn === setting) {
-              iconName = focused ? 'settings' : 'settings-outline';
             }
             return <Icon name={iconName} size={size} color={color} />;
           },
@@ -67,10 +67,17 @@ function App() {
           }}
         />
         <BottomTab.Screen
-          name="Setting"
-          component={Setting}
+          name="Pomodoro"
+          component={Pomodoro}
           options={{
-            headerTitle: 'Settings',
+            headerTitle: 'Pomodoro',
+            tabBarIcon: ({focused, color, size}) => (
+              <MaterialCommunityIcons
+                name={focused ? 'timer-sand-full' : 'timer-sand'}
+                size={size}
+                color={color}
+              />
+            ),
           }}
         />
       </BottomTab.Navigator>
@@ -92,6 +99,7 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen name="TodoEditScreen" component={TodoEditScreen} />
+        <Stack.Screen name="Setting" component={Setting} />
       </Stack.Navigator>
     </NavigationContainer>
   );
