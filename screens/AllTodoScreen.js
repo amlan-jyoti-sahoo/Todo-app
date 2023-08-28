@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {RadioButton} from 'react-native-paper';
 import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import Todo from '../components/Todo';
 import tempData from '../data/tempData';
@@ -22,13 +22,15 @@ import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
 const AllTodoScreen = ({navigation}) => {
-  const [currentDate, setCurrentDate] = useState(
-    moment().toISOString().split('T')[0],
-  );
-  useEffect(() => {
-    // setCurrentDate(moment().toISOString().split('T')[0]);
-    // console.log(currentDate);
-  }, [selectedDate]);
+  const indianTimezone = 'Asia/Kolkata';
+  const currentTime = moment.tz(indianTimezone).format('YYYY-MM-DD');
+  const [currentDate, setCurrentDate] = useState(currentTime);
+
+  // useEffect(() => {
+  //   // const currentTime = moment.tz(indianTimezone).format('YYYY-MM-DD HH:mm:ss');
+  //   setCurrentDate(currentTime);
+  //   console.log(currentTime);
+  // }, [selectedDate, currentDate]);
 
   const [items, setItems] = useState(tempData);
   const [todoText, setTodoText] = useState('');
