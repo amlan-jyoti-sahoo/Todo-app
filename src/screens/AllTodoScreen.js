@@ -20,6 +20,7 @@ import tempData from '../data/todoData';
 import Month from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
+import TodoRender from '../components/TodoRender';
 
 const AllTodoScreen = ({navigation}) => {
   const indianTimezone = 'Asia/Kolkata';
@@ -125,16 +126,6 @@ const AllTodoScreen = ({navigation}) => {
     toggleModal();
   }
 
-  const toggleTodo = id => {
-    // const newData = {...items};
-    // const todos = newData[selectedDate];
-    // const updatedTodos = todos.map(todo =>
-    //   todo.id === id ? {...todo, completed: !todo.completed} : todo,
-    // );
-    // newData[selectedDate] = updatedTodos;
-    // setItems(...items, newData);
-  };
-
   const markedDates = {};
   Object.keys(items).forEach(date => {
     markedDates[date] = {
@@ -160,71 +151,20 @@ const AllTodoScreen = ({navigation}) => {
         autoSelect="markedDate"
         dayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         // renderDayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
-        // style={{backgroundColor: Colors.Primary800}}
         // style={{backgroundColor: 'yellow'}}
         markedDates={markedDates}
         selected={selectedDate}
         onSelectDate={(value, source) => {
-          console.log(
-            '🚀 ~ file: AllTodoScreen.js:159 ~ AllTodoScreen ~ value:',
-            value,
-          );
-          console.log(
-            '🚀 ~ file: AllTodoScreen.js:116 ~ AllTodoScreen ~ source:',
-            source,
-          );
           setSelectedDate(value);
         }}
-        onWeekChange={w => {
-          console.log(
-            '🚀 ~ file: AllTodoScreen.js:119 ~ AllTodoScreen ~ w:',
-            w,
-          );
-          setWeek(w);
-          // setSelectedDate(w);
-        }}
+        // onWeekChange={w => {}}
         theme={{
           selected: {backgroundColor: Colors.Secondary500, color: Colors.white},
         }}
       />
-      <ScrollView style={{flex: 1}}>
-        {items[selectedDate] ? (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}>
-            <View style={styles.todoRenderContainer}>
-              <Text style={{}}>{`${curDay} ${curMonth}`}</Text>
-              {items[selectedDate]
-                .filter(todo => !todo.completed)
-                .map(todo => (
-                  <Todo todo={todo} onToggle={toggleTodo} />
-                ))}
-            </View>
-            {items[selectedDate].filter(todo => todo.completed) !== null ? (
-              <View style={styles.todoRenderContainer}>
-                <Text style={styles.containerTitle}>Completed</Text>
-                {items[selectedDate]
-                  .filter(todo => todo.completed)
-                  .map(todo => (
-                    <Todo todo={todo} onToggle={toggleTodo} />
-                  ))}
-              </View>
-            ) : null}
-          </View>
-        ) : (
-          <Text
-            style={{
-              color: '#f9f1f1',
-              fontSize: 20,
-              fontWeight: '400',
-              marginTop: 20,
-            }}>
-            Todo Not Added yet!
-          </Text>
-        )}
-      </ScrollView>
+
+      {/* All Todo Render Here */}
+      <TodoRender selectedDate={selectedDate} items={items} />
 
       {/* Home screen Calendar Modal */}
       <Modal
@@ -540,5 +480,8 @@ const styles = StyleSheet.create({
   RepeatCalendarContainer: {
     backgroundColor: Colors.Primary800,
     padding: 10,
+  },
+  header: {
+    backgroundColor: 'yellow',
   },
 });
