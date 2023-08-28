@@ -3,8 +3,11 @@ import React from 'react';
 import moment from 'moment-timezone';
 import Todo from './Todo';
 import TodoImg from '../../assets/images/to-do-list.png';
+import {useSelector} from 'react-redux';
+import GlobalStyles from '../styles/GlobalStyles';
 
 const TodoRender = ({selectedDate, items}) => {
+  const todo = useSelector(state => state.todo.todoData);
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
   const toggleTodo = id => {
@@ -17,28 +20,25 @@ const TodoRender = ({selectedDate, items}) => {
     // setItems(...items, newData);
   };
   return (
-    <ScrollView style={{flex: 1}}>
-      {items[selectedDate] ? (
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-          }}>
+    <ScrollView style={styles.rootContainer}>
+      {todo[selectedDate] ? (
+        <View style={styles.todoCompleteContainer}>
           <View style={styles.todoRenderContainer}>
-            <Text style={{}}>{`${curDay} ${curMonth}`}</Text>
-            {items[selectedDate]
+            <Text style={GlobalStyles.textBold}>{`${curDay} ${curMonth}`}</Text>
+            {todo[selectedDate]
               .filter(todo => !todo.completed)
               .map(todo => (
-                <Todo todo={todo} onToggle={toggleTodo} />
+                <Todo todo={todo} selectedDate={selectedDate} />
               ))}
           </View>
-          {items[selectedDate].filter(todo => todo.completed) !== null ? (
+          {todo[selectedDate].filter(todo => todo.completed === true) !==
+          null ? (
             <View style={styles.todoRenderContainer}>
-              <Text style={styles.containerTitle}>Completed</Text>
-              {items[selectedDate]
+              <Text style={GlobalStyles.textBold}>Completed</Text>
+              {todo[selectedDate]
                 .filter(todo => todo.completed)
                 .map(todo => (
-                  <Todo todo={todo} onToggle={toggleTodo} />
+                  <Todo todo={todo} selectedDate={selectedDate} />
                 ))}
             </View>
           ) : null}
@@ -69,4 +69,18 @@ const TodoRender = ({selectedDate, items}) => {
 
 export default TodoRender;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+  },
+  todoCompleteContainer: {
+    flex: 1,
+  },
+  todoRenderContainer: {
+    backgroundColor: Colors.Primary500,
+    marginTop: 10,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    padding: 10,
+  },
+});

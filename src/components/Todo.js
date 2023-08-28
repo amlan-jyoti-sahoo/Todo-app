@@ -3,29 +3,34 @@ import React, {useState} from 'react';
 import tempData from '../data/todoData';
 import CheckBox from '@react-native-community/checkbox';
 import Colors from '../styles/Colors';
+import {useDispatch} from 'react-redux';
+import {todoSlice} from '../store/todoSlice';
 
-function Todo({todo, onToggle}) {
-  const [toggleCheckBox, setToggleCheckBox] = useState(todo.completed);
+function Todo({todo, selectedDate}) {
+  const dispatch = useDispatch();
 
-  function checkBoxClicked() {
-    if (toggleCheckBox) return true;
-    return false;
+  function checkboxPressHandler() {
+    dispatch(
+      todoSlice.actions.setCompleteStatus({
+        todoId: todo.todoId,
+        selectedDate: selectedDate,
+      }),
+    );
   }
-  const random = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
+
   return (
     <View style={styles.todoSublistContainer}>
       <CheckBox
-        // disabled={false}
         style={styles.checkBox}
-        value={todo.completed ? true : false}
-        onValueChange={onToggle(todo.id)}
+        value={todo.completed}
+        onValueChange={checkboxPressHandler}
         animationDuration={0.2}
         tintColors={{true: 'grey', false: 'grey'}}
       />
       <Text
-        style={toggleCheckBox ? styles.strikeText : styles.normalText}
-        key={todo.id}>
-        {todo.todo}
+        style={todo.completed ? styles.strikeText : styles.normalText}
+        key={todo.todoId}>
+        {todo.todoName}
       </Text>
     </View>
   );

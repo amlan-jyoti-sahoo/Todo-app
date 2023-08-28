@@ -451,13 +451,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
   },
-  todoRenderContainer: {
-    width: '100%',
-    backgroundColor: Colors.Primary500,
-    marginTop: 10,
-    borderRadius: 10,
-    padding: 10,
-  },
   closeIconContainer: {
     position: 'absolute',
     height: 50,
