@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import tempData from '../data/tempData';
+import tempData from '../data/todoData';
 import CheckBox from '@react-native-community/checkbox';
 import Colors from '../styles/Colors';
 

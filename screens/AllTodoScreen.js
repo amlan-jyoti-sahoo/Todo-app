@@ -16,7 +16,7 @@ import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
 import moment from 'moment-timezone';
 
 import Todo from '../components/Todo';
-import tempData from '../data/tempData';
+import tempData from '../data/todoData';
 import Month from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
@@ -228,6 +228,7 @@ const AllTodoScreen = ({navigation}) => {
 
       {/* Home screen Calendar Modal */}
       <Modal
+        onBackdropPress={toggleCalendarModal}
         isVisible={isCalendarModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
@@ -271,6 +272,7 @@ const AllTodoScreen = ({navigation}) => {
 
       {/* Add todo modal screen */}
       <Modal
+        onBackdropPress={toggleModal}
         isVisible={isModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
@@ -336,6 +338,7 @@ const AllTodoScreen = ({navigation}) => {
 
       {/* InnerCalendar Date Picker */}
       <Modal
+        onBackdropPress={toggleDateModal}
         isVisible={isDateModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
@@ -435,6 +438,7 @@ const AllTodoScreen = ({navigation}) => {
 
       {/* Repeat Calendar Modal */}
       <Modal
+        onBackdropPress={toggleRepeatModal}
         isVisible={isRepeatModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
