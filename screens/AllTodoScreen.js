@@ -22,10 +22,27 @@ import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 
 const AllTodoScreen = ({navigation}) => {
+  const [currentDate, setCurrentDate] = useState(
+    moment().toISOString().split('T')[0],
+  );
   useEffect(() => {
-    setCurrentDate(moment().toISOString().split('T')[0]);
-    console.log(moment());
-  }, []);
+    // setCurrentDate(moment().toISOString().split('T')[0]);
+    // console.log(currentDate);
+  }, [selectedDate]);
+
+  const [items, setItems] = useState(tempData);
+  const [todoText, setTodoText] = useState('');
+  const [todoDescText, setTodoDescText] = useState('');
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isDateModalVisible, setDateModalVisible] = useState(false);
+  const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
+  const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
+  const [checked, setChecked] = React.useState('norepeat');
+  const [week, setWeek] = useState(new Date().toISOString());
+
+  const curDay = moment(selectedDate).date();
+  const curMonth = Month[moment(selectedDate).month()];
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -64,21 +81,7 @@ const AllTodoScreen = ({navigation}) => {
         </View>
       ),
     });
-  }, [navigation]);
-
-  const [currentDate, setCurrentDate] = useState(
-    moment().toISOString().split('T')[0],
-  );
-  const [items, setItems] = useState(tempData);
-  const [todoText, setTodoText] = useState('');
-  const [todoDescText, setTodoDescText] = useState('');
-  const [selectedDate, setSelectedDate] = useState(currentDate);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isDateModalVisible, setDateModalVisible] = useState(false);
-  const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
-  const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
-  const [checked, setChecked] = React.useState('norepeat');
-  const [week, setWeek] = useState(new Date().toISOString());
+  }, [navigation, selectedDate]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -138,9 +141,6 @@ const AllTodoScreen = ({navigation}) => {
       color: 'red',
     };
   });
-
-  const curDay = moment(selectedDate).date();
-  const curMonth = Month[moment(selectedDate).month()];
 
   return (
     <View style={styles.rootContainer}>
