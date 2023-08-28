@@ -4,11 +4,9 @@ import AllTodoScreen from './screens/AllTodoScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Setting from './screens/Setting';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HabitTackerScreen from './screens/HabitTackerScreen';
-import TodoEditScreen from './screens/TodoEditScreen';
 import Colors from './styles/Colors';
 import Pomodoro from './screens/Pomodoro';
 
@@ -98,8 +96,8 @@ function App() {
           component={BottomTabScreens}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="TodoEditScreen" component={TodoEditScreen} />
-        <Stack.Screen name="Setting" component={Setting} />
+        {/* <Stack.Screen name="TodoEditScreen" component={TodoEditScreen} />
+        <Stack.Screen name="Setting" component={Setting} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
