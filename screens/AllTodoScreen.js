@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {Calendar} from 'react-native-calendars';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -41,7 +41,7 @@ const AllTodoScreen = ({navigation}) => {
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
   const [checked, setChecked] = React.useState('norepeat');
-  const [week, setWeek] = useState(new Date().toISOString());
+  const [week, setWeek] = useState();
 
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
@@ -63,6 +63,7 @@ const AllTodoScreen = ({navigation}) => {
           <TouchableOpacity
             onPress={() => {
               setSelectedDate(currentDate);
+              navigateToSelectedDay(currentDate);
             }}>
             <Text
               style={{
@@ -144,10 +145,18 @@ const AllTodoScreen = ({navigation}) => {
     };
   });
 
+  const weekCalendarRef = useRef();
+
+  const navigateToSelectedDay = selectedDate => {
+    if (weekCalendarRef.current) {
+      weekCalendarRef.current.scrollToDate(selectedDate);
+    }
+  };
+
   return (
     <View style={styles.rootContainer}>
       <WeekCalendar
-        // ref={ref}
+        ref={weekCalendarRef}
         autoSelect="markedDate"
         dayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         // renderDayNames={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
@@ -157,10 +166,14 @@ const AllTodoScreen = ({navigation}) => {
         selected={selectedDate}
         onSelectDate={(value, source) => {
           console.log(
+            '🚀 ~ file: AllTodoScreen.js:159 ~ AllTodoScreen ~ value:',
+            value,
+          );
+          console.log(
             '🚀 ~ file: AllTodoScreen.js:116 ~ AllTodoScreen ~ source:',
             source,
           );
-          setSelectedDate(`${value}`);
+          setSelectedDate(value);
         }}
         onWeekChange={w => {
           console.log(
@@ -232,6 +245,7 @@ const AllTodoScreen = ({navigation}) => {
         <Calendar
           onDayPress={day => {
             setSelectedDate(day.dateString);
+            navigateToSelectedDay(day.dateString);
             toggleCalendarModal();
           }}
           markedDates={{
@@ -339,6 +353,7 @@ const AllTodoScreen = ({navigation}) => {
           <Calendar
             onDayPress={day => {
               setSelectedDate(day.dateString);
+              navigateToSelectedDay(day.dateString);
             }}
             markedDates={{
               [selectedDate]: {
