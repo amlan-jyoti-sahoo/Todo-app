@@ -28,7 +28,11 @@ const TodoRender = ({selectedDate, items}) => {
             {todo[selectedDate]
               .filter(todo => !todo.completed)
               .map(todo => (
-                <Todo todo={todo} selectedDate={selectedDate} />
+                <Todo
+                  key={todo.todoId}
+                  todo={todo}
+                  selectedDate={selectedDate}
+                />
               ))}
           </View>
           {todo[selectedDate].filter(todo => todo.completed === true) !==
@@ -38,7 +42,11 @@ const TodoRender = ({selectedDate, items}) => {
               {todo[selectedDate]
                 .filter(todo => todo.completed)
                 .map(todo => (
-                  <Todo todo={todo} selectedDate={selectedDate} />
+                  <Todo
+                    key={todo.todoId}
+                    todo={todo}
+                    selectedDate={selectedDate}
+                  />
                 ))}
             </View>
           ) : null}

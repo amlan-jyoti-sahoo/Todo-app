@@ -15,24 +15,13 @@ import {RadioButton} from 'react-native-paper';
 import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
 import moment from 'moment-timezone';
 
-import Todo from '../components/Todo';
 import tempData from '../data/todoData';
-import Month from '../data/DateData';
+import Month, {currentDate} from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 import TodoRender from '../components/TodoRender';
 
 const AllTodoScreen = ({navigation}) => {
-  const indianTimezone = 'Asia/Kolkata';
-  const currentTime = moment.tz(indianTimezone).format('YYYY-MM-DD');
-  const [currentDate, setCurrentDate] = useState(currentTime);
-
-  // useEffect(() => {
-  //   // const currentTime = moment.tz(indianTimezone).format('YYYY-MM-DD HH:mm:ss');
-  //   setCurrentDate(currentTime);
-  //   console.log(currentTime);
-  // }, [selectedDate, currentDate]);
-
   const [items, setItems] = useState(tempData);
   const [todoText, setTodoText] = useState('');
   const [todoDescText, setTodoDescText] = useState('');
@@ -42,7 +31,6 @@ const AllTodoScreen = ({navigation}) => {
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
   const [checked, setChecked] = React.useState('norepeat');
-  const [week, setWeek] = useState();
 
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
@@ -136,6 +124,7 @@ const AllTodoScreen = ({navigation}) => {
     };
   });
 
+  //to navigate to particular date
   const weekCalendarRef = useRef();
 
   const navigateToSelectedDay = selectedDate => {
