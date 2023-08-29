@@ -5,6 +5,7 @@ import Todo from './Todo';
 import TodoImg from '../../assets/images/to-do-list.png';
 import {useSelector} from 'react-redux';
 import GlobalStyles from '../styles/GlobalStyles';
+import {currentDate} from '../data/DateData';
 
 const TodoRender = ({selectedDate}) => {
   const todo = useSelector(state => state.todo.todoData);
@@ -24,7 +25,11 @@ const TodoRender = ({selectedDate}) => {
       {todo[selectedDate] ? (
         <View style={styles.todoCompleteContainer}>
           <View style={styles.todoRenderContainer}>
-            <Text style={GlobalStyles.textBold}>{`${curDay} ${curMonth}`}</Text>
+            <Text style={GlobalStyles.textBold}>
+              {selectedDate === currentDate
+                ? 'TODAY'
+                : `${curDay} ${curMonth.toUpperCase()}`}
+            </Text>
             {todo[selectedDate]
               .filter(todo => !todo.completed)
               .map(todo => (

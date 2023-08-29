@@ -28,7 +28,6 @@ const AllTodoScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const todo = useSelector(state => state.todo.todoData);
 
-  const [items, setItems] = useState(todo);
   const [todoText, setTodoText] = useState('');
   const [todoDescText, setTodoDescText] = useState('');
   const [selectedDate, setSelectedDate] = useState(currentDate);
@@ -36,6 +35,7 @@ const AllTodoScreen = ({navigation}) => {
   const [isDateModalVisible, setDateModalVisible] = useState(false);
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
+  const [repeatDate, setRepeatDate] = useState('No Repeat');
 
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
@@ -103,22 +103,6 @@ const AllTodoScreen = ({navigation}) => {
         todoDescText: todoDescText,
       }),
     );
-    // if (items.hasOwnProperty(selectedDate)) {
-    //   setItems(prevItems => ({
-    //     ...prevItems,
-    //     [selectedDate]: [
-    //       ...prevItems[selectedDate],
-    //       {todo: todoText, description: todoDescText, completed: false},
-    //     ],
-    //   }));
-    // } else {
-    //   setItems(prevItems => ({
-    //     ...prevItems,
-    //     [selectedDate]: [
-    //       {todo: todoText, description: todoDescText, completed: false},
-    //     ],
-    //   }));
-    // }
     setTodoText('');
     setTodoDescText('');
     console.log(todo[selectedDate]);
@@ -126,7 +110,7 @@ const AllTodoScreen = ({navigation}) => {
   }
 
   const markedDates = {};
-  Object.keys(items).forEach(date => {
+  Object.keys(todo).forEach(date => {
     markedDates[date] = {
       marked: true,
       type: 'dot',
@@ -144,6 +128,10 @@ const AllTodoScreen = ({navigation}) => {
     }
   };
 
+  const setRepeatTodoHandler = repeatText => {
+    setRepeatDate(repeatText);
+    console.log(repeatDate);
+  };
   return (
     <View style={styles.rootContainer}>
       <WeekCalendar
@@ -340,7 +328,7 @@ const AllTodoScreen = ({navigation}) => {
                   <Text style={styles.constantText}> Set Repeat</Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.constantText}>None</Text>
+                  <Text style={styles.constantText}>{repeatDate}</Text>
                   <AntIcon
                     style={{marginLeft: 20}}
                     name="right"
@@ -385,7 +373,10 @@ const AllTodoScreen = ({navigation}) => {
         isVisible={isRepeatModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
-        <SetRepeat toggleRepeatModal={toggleRepeatModal} />
+        <SetRepeat
+          toggleRepeatModal={toggleRepeatModal}
+          setRepeatTodoHandler={setRepeatTodoHandler}
+        />
       </Modal>
 
       {/* Floating Button */}

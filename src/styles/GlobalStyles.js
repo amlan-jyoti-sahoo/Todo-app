@@ -6,6 +6,11 @@ const GlobalStyles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  textSemiBold: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: '600',
+  },
   textNormal: {
     fontSize: 14,
     color: 'white',
