@@ -20,9 +20,15 @@ import Month, {currentDate} from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 import TodoRender from '../components/TodoRender';
+import SetRepeat from '../components/SetRepeat';
+import {useDispatch, useSelector} from 'react-redux';
+import {todoSlice} from '../store/todoSlice';
 
 const AllTodoScreen = ({navigation}) => {
-  const [items, setItems] = useState(tempData);
+  const dispatch = useDispatch();
+  const todo = useSelector(state => state.todo.todoData);
+
+  const [items, setItems] = useState(todo);
   const [todoText, setTodoText] = useState('');
   const [todoDescText, setTodoDescText] = useState('');
   const [selectedDate, setSelectedDate] = useState(currentDate);
@@ -30,7 +36,6 @@ const AllTodoScreen = ({navigation}) => {
   const [isDateModalVisible, setDateModalVisible] = useState(false);
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
-  const [checked, setChecked] = React.useState('norepeat');
 
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
@@ -91,26 +96,32 @@ const AllTodoScreen = ({navigation}) => {
 
   function AddTodoHandler() {
     const date = `'${selectedDate}'`;
-    console.log('🚀 ~ file: Calender.js:65 ~ AddTodoHandler ~ date:', date);
-    console.log(items.hasOwnProperty(selectedDate));
-    if (items.hasOwnProperty(selectedDate)) {
-      setItems(prevItems => ({
-        ...prevItems,
-        [selectedDate]: [
-          ...prevItems[selectedDate],
-          {todo: todoText, description: todoDescText, completed: false},
-        ],
-      }));
-    } else {
-      setItems(prevItems => ({
-        ...prevItems,
-        [selectedDate]: [
-          {todo: todoText, description: todoDescText, completed: false},
-        ],
-      }));
-    }
+    dispatch(
+      todoSlice.actions.AddTodo({
+        selectedDate: selectedDate,
+        todoText: todoText,
+        todoDescText: todoDescText,
+      }),
+    );
+    // if (items.hasOwnProperty(selectedDate)) {
+    //   setItems(prevItems => ({
+    //     ...prevItems,
+    //     [selectedDate]: [
+    //       ...prevItems[selectedDate],
+    //       {todo: todoText, description: todoDescText, completed: false},
+    //     ],
+    //   }));
+    // } else {
+    //   setItems(prevItems => ({
+    //     ...prevItems,
+    //     [selectedDate]: [
+    //       {todo: todoText, description: todoDescText, completed: false},
+    //     ],
+    //   }));
+    // }
     setTodoText('');
-    console.log(items);
+    setTodoDescText('');
+    console.log(todo[selectedDate]);
     toggleModal();
   }
 
@@ -153,7 +164,7 @@ const AllTodoScreen = ({navigation}) => {
       />
 
       {/* All Todo Render Here */}
-      <TodoRender selectedDate={selectedDate} items={items} />
+      <TodoRender selectedDate={selectedDate} />
 
       {/* Home screen Calendar Modal */}
       <Modal
@@ -248,7 +259,10 @@ const AllTodoScreen = ({navigation}) => {
               <Text style={{color: Colors.Secondary500}}>{selectedDate}</Text>
               <Icon name={'flag'} size={24} color="#a7a7a7" />
             </View>
-            <TouchableOpacity onPress={AddTodoHandler}>
+            <TouchableOpacity
+              onPress={AddTodoHandler}
+              disabled={todoText === ''}
+              style={todoText === '' ? {opacity: 0.5} : null}>
               <View
                 style={{
                   width: 40,
@@ -371,55 +385,7 @@ const AllTodoScreen = ({navigation}) => {
         isVisible={isRepeatModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
-        <TouchableOpacity
-          style={styles.closeIconContainer}
-          onPress={toggleRepeatModal}>
-          <Icon
-            style={styles.closeIcon}
-            name="close"
-            size={30}
-            color="#ffffff"
-          />
-        </TouchableOpacity>
-        <View style={styles.RepeatCalendarContainer}>
-          <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <RadioButton
-                value="norepeat"
-                completed={checked === 'norepeat' ? 'checked' : 'unchecked'}
-                onPress={() => setChecked('norepeat')}
-              />
-              <Text style={{color: 'black'}}>No Repeat</Text>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <RadioButton
-                value="daily"
-                completed={checked === 'daily' ? 'checked' : 'unchecked'}
-                onPress={() => setChecked('daily')}
-              />
-              <Text style={{color: 'black'}}>Daily</Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              padding: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                toggleRepeatModal();
-              }}>
-              <Text style={{color: 'skyblue', fontSize: 16}}>CANCEL</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleRepeatModal}>
-              <Text style={{color: 'skyblue', marginLeft: 40, fontSize: 16}}>
-                OK
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <SetRepeat toggleRepeatModal={toggleRepeatModal} />
       </Modal>
 
       {/* Floating Button */}

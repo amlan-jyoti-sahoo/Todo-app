@@ -6,7 +6,7 @@ import TodoImg from '../../assets/images/to-do-list.png';
 import {useSelector} from 'react-redux';
 import GlobalStyles from '../styles/GlobalStyles';
 
-const TodoRender = ({selectedDate, items}) => {
+const TodoRender = ({selectedDate}) => {
   const todo = useSelector(state => state.todo.todoData);
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];

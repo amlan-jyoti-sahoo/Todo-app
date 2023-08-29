@@ -6,9 +6,15 @@ import Colors from '../styles/Colors';
 import {useDispatch} from 'react-redux';
 import {todoSlice} from '../store/todoSlice';
 import GlobalStyles from '../styles/GlobalStyles';
+import {currentDate} from '../data/DateData';
+import moment from 'moment-timezone';
 
 function Todo({todo, selectedDate, index}) {
   const dispatch = useDispatch();
+
+  const curDay = moment(selectedDate).date();
+  const curMonth = Month[moment(selectedDate).month()];
+  console.log('🚀 ~ file: Todo.js:16 ~ curMonth:', curMonth);
 
   function checkboxPressHandler() {
     dispatch(
@@ -36,8 +42,18 @@ function Todo({todo, selectedDate, index}) {
         </Text>
       </View>
       <Text
-        style={[GlobalStyles.textNormal, {fontSize: 10, textAlign: 'center'}]}>
-        29 sep
+        style={
+          todo.completed
+            ? [
+                GlobalStyles.textNormal,
+                {fontSize: 10, textAlign: 'center', color: 'gray'},
+              ]
+            : [
+                GlobalStyles.textNormal,
+                {fontSize: 10, textAlign: 'center', color: Colors.Secondary500},
+              ]
+        }>
+        {selectedDate === currentDate ? 'Today' : `${curDay} ${curMonth}`}
       </Text>
     </View>
   );
@@ -55,15 +71,16 @@ const styles = StyleSheet.create({
   },
   todoleftContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   normalText: {
     marginLeft: 10,
     color: Colors.PrimaryTextColor,
-    fontSize: 18,
+    fontSize: 16,
   },
   strikeText: {
     marginLeft: 10,
-    fontSize: 18,
+    fontSize: 16,
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
     color: 'gray',

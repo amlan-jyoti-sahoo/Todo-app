@@ -23,5 +23,18 @@ export const todoSlice = createSlice({
       const selectedTodo = state.todoData[selectedDate][tappedTodoIndex];
       selectedTodo.completed = !selectedTodo.completed;
     },
+    AddTodo: (state, action) => {
+      const {todoId, selectedDate, todoText, todoDescText} = action.payload;
+      if (!state.todoData.hasOwnProperty(selectedDate)) {
+        state.todoData[selectedDate] = [];
+      }
+      const newTodo = {
+        todoId: `${selectedDate}-${state.todoData[selectedDate].length + 1}`,
+        todoName: todoText,
+        description: todoDescText,
+        completed: false,
+      };
+      state.todoData[selectedDate].push(newTodo);
+    },
   },
 });
