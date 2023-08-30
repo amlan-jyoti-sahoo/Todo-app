@@ -24,17 +24,67 @@ export const todoSlice = createSlice({
       selectedTodo.completed = !selectedTodo.completed;
     },
     AddTodo: (state, action) => {
-      const {todoId, selectedDate, todoText, todoDescText} = action.payload;
-      if (!state.todoData.hasOwnProperty(selectedDate)) {
-        state.todoData[selectedDate] = [];
+      const {selectedDate, todoText, todoDescText, repeatType} = action.payload;
+
+      function AddTodoHandler(newSelectedDate) {
+        if (!state.todoData.hasOwnProperty(newSelectedDate)) {
+          state.todoData[newSelectedDate] = [];
+        }
+        const newTodo = {
+          todoId: `${newSelectedDate}-${
+            state.todoData[newSelectedDate].length + 1
+          }`,
+          todoName: todoText,
+          description: todoDescText,
+          completed: false,
+          repeatType: repeatType,
+        };
+        state.todoData[newSelectedDate].push(newTodo);
       }
-      const newTodo = {
-        todoId: `${selectedDate}-${state.todoData[selectedDate].length + 1}`,
-        todoName: todoText,
-        description: todoDescText,
-        completed: false,
-      };
-      state.todoData[selectedDate].push(newTodo);
+
+      function getNewDate(day) {
+        const currentDateStr = new Date(selectedDate);
+        const newDateAfterAdding = new Date(currentDateStr);
+        newDateAfterAdding.setDate(currentDateStr.getDate() + day);
+
+        const newDateAfterAddingFormatted = newDateAfterAdding
+          .toISOString()
+          .split('T')[0];
+
+        return newDateAfterAddingFormatted;
+      }
+
+      if (repeatType === 'norepeat') {
+        AddTodoHandler(selectedDate);
+      } else if (repeatType === 'daily' || repeatType === 'oneYear') {
+        for (let day = 0; day < 365; day++) {
+          const newDateAfterAddingFormatted = getNewDate(day);
+          AddTodoHandler(newDateAfterAddingFormatted);
+        }
+      } else if (repeatType === 'weekday') {
+        for (let day = 0; day < 365; day++) {
+          const newDateAfterAddingFormatted = getNewDate(day);
+          // console.log(newDateAfterAddingFormatted);
+          const date = new Date(newDateAfterAddingFormatted);
+          const dayName = new Intl.DateTimeFormat('en-US', {
+            weekday: 'short',
+          }).format(date);
+
+          if (dayName !== 'Sun' && dayName !== 'Sat') {
+            AddTodoHandler(newDateAfterAddingFormatted);
+          }
+        }
+      } else if (repeatType === 'oneWeek') {
+        for (let day = 0; day < 7; day++) {
+          const newDateAfterAddingFormatted = getNewDate(day);
+          AddTodoHandler(newDateAfterAddingFormatted);
+        }
+      } else if (repeatType === 'oneMonth') {
+        for (let day = 0; day < 30; day++) {
+          const newDateAfterAddingFormatted = getNewDate(day);
+          AddTodoHandler(newDateAfterAddingFormatted);
+        }
+      }
     },
   },
 });

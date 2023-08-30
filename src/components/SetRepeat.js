@@ -14,7 +14,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import moment from 'moment-timezone';
 import {curDayName} from '../data/DateData';
 const SetRepeat = ({toggleRepeatModal, setRepeatTodoHandler}) => {
-  const [selectedValue, setSelectedValue] = React.useState('option1');
+  const [selectedValue, setSelectedValue] = React.useState('norepeat');
 
   const onSelect = value => {
     setRepeatTodoHandler(value);
@@ -39,7 +39,7 @@ const SetRepeat = ({toggleRepeatModal, setRepeatTodoHandler}) => {
           value={selectedValue}>
           <View style={styles.radioButtonContainer}>
             <RadioButton
-              value="option1"
+              value="norepeat"
               color={Colors.Secondary500}
               uncheckedColor="gray"
             />
@@ -47,7 +47,7 @@ const SetRepeat = ({toggleRepeatModal, setRepeatTodoHandler}) => {
           </View>
           <View style={styles.radioButtonContainer}>
             <RadioButton
-              value="option2"
+              value="daily"
               color={Colors.Secondary500}
               uncheckedColor="gray"
             />
@@ -55,7 +55,7 @@ const SetRepeat = ({toggleRepeatModal, setRepeatTodoHandler}) => {
           </View>
           <View style={styles.radioButtonContainer}>
             <RadioButton
-              value="option3"
+              value="weekday"
               color={Colors.Secondary500}
               uncheckedColor="gray"
             />
@@ -65,29 +65,36 @@ const SetRepeat = ({toggleRepeatModal, setRepeatTodoHandler}) => {
           </View>
           <View style={styles.radioButtonContainer}>
             <RadioButton
-              value="option4"
+              value="oneWeek"
               color={Colors.Secondary500}
               uncheckedColor="gray"
             />
             <Text
               style={
                 GlobalStyles.textSemiBold
-              }>{`Weekly (${curDayName})`}</Text>
+              }>{`One Week (${curDayName})`}</Text>
           </View>
           <View style={styles.radioButtonContainer}>
             <RadioButton
-              value="option5"
+              value="oneMonth"
               color={Colors.Secondary500}
               uncheckedColor="gray"
             />
-            <Text style={GlobalStyles.textSemiBold}>{`Yearly`}</Text>
+            <Text style={GlobalStyles.textSemiBold}>{`One Month`}</Text>
+          </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton
+              value="oneYear"
+              color={Colors.Secondary500}
+              uncheckedColor="gray"
+            />
+            <Text style={GlobalStyles.textSemiBold}>{`One Year`}</Text>
           </View>
         </RadioButton.Group>
         <View style={styles.warningText}>
           <Text
             style={[GlobalStyles.textNormal, {color: '#f0afaf', fontSize: 11}]}>
-            * You can add upto 1 year max in advance. You have to update repeat
-            task again after 1 year.
+            * You can add recurring tasks upto 1 year in advance.
           </Text>
         </View>
         <View

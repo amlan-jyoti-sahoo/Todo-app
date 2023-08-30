@@ -11,6 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import HabitTackerScreen from './screens/HabitTackerScreen';
 import Colors from './styles/Colors';
 import Pomodoro from './screens/Pomodoro';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 //Screens
 
@@ -86,23 +87,25 @@ function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={({route}) => ({
-            headerStyle: {
-              backgroundColor: 'black',
-              borderTopColor: 'transparent',
-            },
-          })}>
-          <Stack.Screen
-            name="BottomTabScreens"
-            component={BottomTabScreens}
-            options={{headerShown: false}}
-          />
-          {/* <Stack.Screen name="TodoEditScreen" component={TodoEditScreen} />
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={({route}) => ({
+              headerStyle: {
+                backgroundColor: 'black',
+                borderTopColor: 'transparent',
+              },
+            })}>
+            <Stack.Screen
+              name="BottomTabScreens"
+              component={BottomTabScreens}
+              options={{headerShown: false}}
+            />
+            {/* <Stack.Screen name="TodoEditScreen" component={TodoEditScreen} />
         <Stack.Screen name="Setting" component={Setting} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

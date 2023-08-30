@@ -16,9 +16,9 @@ export default FloatingButton;
 const styles = StyleSheet.create({
   FloatingButton: {
     backgroundColor: Colors.Secondary500,
-    borderRadius: 30,
-    width: 60,
-    height: 60,
+    borderRadius: 10,
+    width: 50,
+    height: 50,
     position: 'absolute',
     right: 20,
     bottom: 20,

@@ -35,7 +35,7 @@ const AllTodoScreen = ({navigation}) => {
   const [isDateModalVisible, setDateModalVisible] = useState(false);
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
   const [isRepeatModalVisible, setRepeatModalVisible] = useState(false);
-  const [repeatDate, setRepeatDate] = useState('No Repeat');
+  const [repeatType, setRepeatType] = useState('norepeat');
 
   const curDay = moment(selectedDate).date();
   const curMonth = Month[moment(selectedDate).month()];
@@ -101,10 +101,12 @@ const AllTodoScreen = ({navigation}) => {
         selectedDate: selectedDate,
         todoText: todoText,
         todoDescText: todoDescText,
+        repeatType: repeatType,
       }),
     );
     setTodoText('');
     setTodoDescText('');
+    setRepeatType('norepeat');
     console.log(todo[selectedDate]);
     toggleModal();
   }
@@ -129,8 +131,8 @@ const AllTodoScreen = ({navigation}) => {
   };
 
   const setRepeatTodoHandler = repeatText => {
-    setRepeatDate(repeatText);
-    console.log(repeatDate);
+    setRepeatType(repeatText);
+    console.log(repeatType);
   };
   return (
     <View style={styles.rootContainer}>
@@ -328,7 +330,7 @@ const AllTodoScreen = ({navigation}) => {
                   <Text style={styles.constantText}> Set Repeat</Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.constantText}>{repeatDate}</Text>
+                  <Text style={styles.constantText}>{repeatType}</Text>
                   <AntIcon
                     style={{marginLeft: 20}}
                     name="right"
