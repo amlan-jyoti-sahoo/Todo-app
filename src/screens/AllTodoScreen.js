@@ -102,6 +102,7 @@ const AllTodoScreen = ({navigation}) => {
         todoText: todoText,
         todoDescText: todoDescText,
         repeatType: repeatType,
+        recurringId: new Date().toString(),
       }),
     );
     setTodoText('');

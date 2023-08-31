@@ -9,4 +9,5 @@ export default Colors = {
   Secondary500: '#3FA0EF',
   Secondary300: '#6BD0FF',
   PrimaryTextColor: '#FFFFFF',
+  error: 'red',
 };

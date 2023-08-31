@@ -24,7 +24,8 @@ export const todoSlice = createSlice({
       selectedTodo.completed = !selectedTodo.completed;
     },
     AddTodo: (state, action) => {
-      const {selectedDate, todoText, todoDescText, repeatType} = action.payload;
+      const {selectedDate, todoText, todoDescText, repeatType, recurringId} =
+        action.payload;
 
       function AddTodoHandler(newSelectedDate) {
         if (!state.todoData.hasOwnProperty(newSelectedDate)) {
@@ -35,11 +36,13 @@ export const todoSlice = createSlice({
             state.todoData[newSelectedDate].length + 1
           }`,
           todoName: todoText,
+          recurringId: recurringId,
           description: todoDescText,
           completed: false,
           repeatType: repeatType,
         };
         state.todoData[newSelectedDate].push(newTodo);
+        console.log('skjfksdkfjskdfksd', recurringId);
       }
 
       function getNewDate(day) {

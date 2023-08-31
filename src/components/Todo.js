@@ -18,7 +18,7 @@ import moment from 'moment-timezone';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function Todo({todo, selectedDate, index}) {
+function Todo({todo, selectedDate}) {
   const dispatch = useDispatch();
 
   const curDay = moment(selectedDate).date();
@@ -32,7 +32,7 @@ function Todo({todo, selectedDate, index}) {
           <MaterialCommunityIcons
             name="square-edit-outline"
             size={24}
-            color={'white'}
+            color={Colors.Secondary800}
           />
         </View>
       </TouchableOpacity>
@@ -42,7 +42,11 @@ function Todo({todo, selectedDate, index}) {
     return (
       <TouchableOpacity activeOpacity={0.6}>
         <View style={styles.deleteBox}>
-          <MaterialCommunityIcons name="delete" size={24} color={'white'} />
+          <MaterialCommunityIcons
+            name="delete"
+            size={24}
+            color={Colors.error}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -57,8 +61,12 @@ function Todo({todo, selectedDate, index}) {
   }
 
   return (
-    <Swipeable renderLeftActions={leftSwipe} renderRightActions={rightSwipe}>
-      <View key={index} style={styles.todoSublistContainer}>
+    <Swipeable
+      renderLeftActions={leftSwipe}
+      renderRightActions={rightSwipe}
+      // ref={ref => (row[index] = ref)}
+      rightOpenValue={-100}>
+      <View style={styles.todoSublistContainer}>
         <View style={styles.todoleftContainer}>
           <CheckBox
             style={styles.checkbox}
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     margin: 5,
     alignItems: 'center',
-    // backgroundColor: 'red',
+    backgroundColor: Colors.Primary500,
   },
   todoleftContainer: {
     flexDirection: 'row',
@@ -126,14 +134,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   editBox: {
-    backgroundColor: Colors.Secondary800,
+    // backgroundColor: Colors.Secondary800,
     justifyContent: 'center',
     alignItems: 'center',
     width: 100,
     height: '100%',
   },
   deleteBox: {
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
     width: 100,

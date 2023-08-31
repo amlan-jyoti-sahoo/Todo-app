@@ -2,6 +2,7 @@ export default tempData = {
   '2023-08-29': [
     {
       todoId: '2023-08-29-1',
+      recurringId: '',
       todoName: 'Study',
       description: 'study time table',
       completed: false,
@@ -9,6 +10,7 @@ export default tempData = {
     },
     {
       todoId: '2023-08-29-2',
+      recurringId: '',
       todoName: 'trip',
       description: 'trip to goa',
       completed: false,
@@ -16,6 +18,7 @@ export default tempData = {
     },
     {
       todoId: '2023-08-29-3',
+      recurringId: '',
       todoName: 'react app',
       description: 'trip to goa',
       completed: false,
@@ -23,6 +26,7 @@ export default tempData = {
     },
     {
       todoId: '2023-08-29-4',
+      recurringId: '',
       todoName: 'sleep',
       description: 'trip to goa',
       completed: false,
@@ -32,6 +36,7 @@ export default tempData = {
   '2023-08-28': [
     {
       todoId: '2023-08-28-1',
+      recurringId: '',
       todoName: 'marketing',
       description: 'brought vegetables',
       completed: true,
@@ -39,6 +44,7 @@ export default tempData = {
     },
     {
       todoId: '2023-08-28-2',
+      recurringId: '',
       todoName: 'pg rent',
       description: 'give pg rent',
       completed: false,
@@ -46,6 +52,7 @@ export default tempData = {
     },
     {
       todoId: '2023-08-29-3',
+      recurringId: '',
       todoName: 'room change',
       description: 'give pg rent',
       completed: true,

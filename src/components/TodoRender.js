@@ -20,6 +20,7 @@ const TodoRender = ({selectedDate}) => {
     // newData[selectedDate] = updatedTodos;
     // setItems(...items, newData);
   };
+
   return (
     <ScrollView style={styles.rootContainer}>
       {todo[selectedDate] ? (
