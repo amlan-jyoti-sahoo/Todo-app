@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import Colors from './Colors';
 
 const GlobalStyles = StyleSheet.create({
   textBold: {
@@ -15,6 +16,11 @@ const GlobalStyles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: '400',
+  },
+  textButton: {
+    fontSize: 14,
+    color: Colors.Secondary500,
+    fontWeight: '600',
   },
 });
 

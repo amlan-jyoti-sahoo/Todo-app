@@ -23,7 +23,6 @@ import TodoRender from '../components/TodoRender';
 import SetRepeat from '../components/SetRepeat';
 import {useDispatch, useSelector} from 'react-redux';
 import {todoSlice} from '../store/todoSlice';
-
 const AllTodoScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const todo = useSelector(state => state.todo.todoData);
@@ -95,20 +94,19 @@ const AllTodoScreen = ({navigation}) => {
   };
 
   function AddTodoHandler() {
-    const date = `'${selectedDate}'`;
+    const recurringTime = new Date();
     dispatch(
       todoSlice.actions.AddTodo({
         selectedDate: selectedDate,
         todoText: todoText,
         todoDescText: todoDescText,
         repeatType: repeatType,
-        recurringId: new Date().toString(),
+        recurringId: `${recurringTime}`,
       }),
     );
     setTodoText('');
     setTodoDescText('');
     setRepeatType('norepeat');
-    console.log(todo[selectedDate]);
     toggleModal();
   }
 
@@ -133,7 +131,6 @@ const AllTodoScreen = ({navigation}) => {
 
   const setRepeatTodoHandler = repeatText => {
     setRepeatType(repeatText);
-    console.log(repeatType);
   };
   return (
     <View style={styles.rootContainer}>

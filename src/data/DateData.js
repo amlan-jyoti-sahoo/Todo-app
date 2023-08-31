@@ -23,7 +23,6 @@ const newDateAfterAddingFormatted = newDateAfterAdding
   .toISOString()
   .split('T')[0];
 
-console.log(newDateAfterAddingFormatted);
 // export const DayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default Month = [

@@ -73,7 +73,7 @@ const TodoRender = ({selectedDate}) => {
               fontWeight: '400',
               marginTop: 20,
             }}>
-            Todo Not Added yet!
+            Task Not Added yet!
           </Text>
         </View>
       )}

@@ -23,6 +23,28 @@ export const todoSlice = createSlice({
       const selectedTodo = state.todoData[selectedDate][tappedTodoIndex];
       selectedTodo.completed = !selectedTodo.completed;
     },
+    DeleteTodo: (state, action) => {
+      const {selectedDate, todoId} = action.payload;
+      state.todoData[selectedDate] = state.todoData[selectedDate].filter(
+        item => item.todoId !== todoId,
+      );
+      if (state.todoData[selectedDate].length === 0) {
+        delete state.todoData[selectedDate];
+      }
+    },
+    DeleteAllRecurringTodo: (state, action) => {
+      const {recurringId} = action.payload;
+      for (const dateKey in state.todoData) {
+        if (Object.hasOwnProperty.call(state.todoData, dateKey)) {
+          state.todoData[dateKey] = state.todoData[dateKey].filter(
+            item => item.recurringId !== recurringId,
+          );
+          if (state.todoData[dateKey].length === 0) {
+            delete state.todoData[dateKey];
+          }
+        }
+      }
+    },
     AddTodo: (state, action) => {
       const {selectedDate, todoText, todoDescText, repeatType, recurringId} =
         action.payload;
@@ -42,7 +64,6 @@ export const todoSlice = createSlice({
           repeatType: repeatType,
         };
         state.todoData[newSelectedDate].push(newTodo);
-        console.log('skjfksdkfjskdfksd', recurringId);
       }
 
       function getNewDate(day) {
@@ -67,7 +88,6 @@ export const todoSlice = createSlice({
       } else if (repeatType === 'weekday') {
         for (let day = 0; day < 365; day++) {
           const newDateAfterAddingFormatted = getNewDate(day);
-          // console.log(newDateAfterAddingFormatted);
           const date = new Date(newDateAfterAddingFormatted);
           const dayName = new Intl.DateTimeFormat('en-US', {
             weekday: 'short',
