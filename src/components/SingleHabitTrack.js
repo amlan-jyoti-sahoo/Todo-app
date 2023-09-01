@@ -4,7 +4,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import {useSelector} from 'react-redux';
 import {currentDate, currentDayIndex} from '../data/DateData';
 
-const SingleHabitTrack = ({uniqueTodoReccuringId}) => {
+const SingleHabitTrack = ({uniqueTodoReccuringId, todoName}) => {
   const todo = useSelector(state => state.todo.todoData);
 
   //   const selectedTodoIndex = todo[date].findIndex(
@@ -42,7 +42,7 @@ const SingleHabitTrack = ({uniqueTodoReccuringId}) => {
   return (
     <View style={styles.singleHabitContainer}>
       <View style={styles.habitNameContainer}>
-        <Text style={GlobalStyles.textSemiBold}>{uniqueTodoReccuringId}</Text>
+        <Text style={GlobalStyles.textSemiBold}>{todoName}</Text>
       </View>
       <View style={styles.weekTackerRootContainer}>
         <View style={styles.weekTackerContainer}>

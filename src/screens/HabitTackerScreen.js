@@ -12,14 +12,17 @@ const HabitTackerScreen = () => {
 
   // Create a Set to store unique todo names
   const uniqueTodo = new Set();
+  const recurringIdToNameMap = {}; // Object to store recurring IDs and their names
 
   // Iterate through each date key in the todoData object
   for (const dateKey in todo) {
     if (Object.hasOwnProperty.call(todo, dateKey)) {
       const todos = todo[dateKey];
-      for (const todo of todos) {
-        if (todo.repeatType !== 'norepeat') {
-          uniqueTodo.add(todo.recurringId);
+      for (const todoItem of todos) {
+        if (todoItem.repeatType !== 'norepeat') {
+          uniqueTodo.add(todoItem.recurringId);
+          // Store the recurring ID and its name in the mapping object
+          recurringIdToNameMap[todoItem.recurringId] = todoItem.todoName;
         }
       }
     }
@@ -118,6 +121,7 @@ const HabitTackerScreen = () => {
           <SingleHabitTrack
             key={index}
             uniqueTodoReccuringId={uniqueTodoReccuringId}
+            todoName={recurringIdToNameMap[uniqueTodoReccuringId]}
           />
         ))}
       </View>
