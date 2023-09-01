@@ -17,11 +17,8 @@ const HabitTackerScreen = () => {
   for (const dateKey in todo) {
     if (Object.hasOwnProperty.call(todo, dateKey)) {
       const todos = todo[dateKey];
-      // Iterate through todos for each date
       for (const todo of todos) {
-        // Check if the repeatType is not equal to 'norepeat'
         if (todo.repeatType !== 'norepeat') {
-          // Add the todoName to the Set to ensure uniqueness
           uniqueTodo.add(todo.recurringId);
         }
       }
@@ -31,34 +28,90 @@ const HabitTackerScreen = () => {
   // Convert the Set to an array if needed
   const uniqueTodoArray = Array.from(uniqueTodo);
 
-  console.log(uniqueTodoArray);
+  const currDayIndex = currentDayIndex();
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.headerDayNameRootContainer}>
           <View style={styles.headerDayNameContainer}>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Mon
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Tue
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Wed
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Thu
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Fri
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Sat
-            </Text>
-            <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-              Sun
-            </Text>
+            <View
+              style={
+                currDayIndex == 0
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Mon
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 1
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Tue
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 2
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Wed
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 3
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Thu
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 4
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Fri
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 5
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Sat
+              </Text>
+            </View>
+            <View
+              style={
+                currDayIndex == 6
+                  ? styles.daySelectedContainer
+                  : styles.dayNotSelectedContainer
+              }>
+              <Text
+                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+                Sun
+              </Text>
+            </View>
           </View>
         </View>
         {uniqueTodoArray.map((uniqueTodoReccuringId, index) => (
@@ -98,6 +151,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingRight: 5,
+  },
+  daySelectedContainer: {
+    backgroundColor: Colors.Secondary500,
+    height: 23,
+    width: 23,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 1,
+  },
+  dayNotSelectedContainer: {
+    height: 23,
+    width: 23,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 1,
   },
   headerDayNameText: {fontSize: 10},
 });
