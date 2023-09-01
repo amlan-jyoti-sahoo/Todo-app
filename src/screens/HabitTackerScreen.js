@@ -1,11 +1,38 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 import GlobalStyles from '../styles/GlobalStyles';
 import SingleHabitTrack from '../components/SingleHabitTrack';
+import {useSelector} from 'react-redux';
+import {currentDayIndex} from '../data/DateData';
 
 const HabitTackerScreen = () => {
+  const todo = useSelector(state => state.todo.todoData);
+
+  // Create a Set to store unique todo names
+  const uniqueTodo = new Set();
+
+  // Iterate through each date key in the todoData object
+  for (const dateKey in todo) {
+    if (Object.hasOwnProperty.call(todo, dateKey)) {
+      const todos = todo[dateKey];
+      // Iterate through todos for each date
+      for (const todo of todos) {
+        // Check if the repeatType is not equal to 'norepeat'
+        if (todo.repeatType !== 'norepeat') {
+          // Add the todoName to the Set to ensure uniqueness
+          uniqueTodo.add(todo.recurringId);
+        }
+      }
+    }
+  }
+
+  // Convert the Set to an array if needed
+  const uniqueTodoArray = Array.from(uniqueTodo);
+
+  console.log(uniqueTodoArray);
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
@@ -34,10 +61,13 @@ const HabitTackerScreen = () => {
             </Text>
           </View>
         </View>
-        <SingleHabitTrack habitName="study react native" />
-        <SingleHabitTrack habitName="Morning Walk" />
+        {uniqueTodoArray.map((uniqueTodoReccuringId, index) => (
+          <SingleHabitTrack
+            key={index}
+            uniqueTodoReccuringId={uniqueTodoReccuringId}
+          />
+        ))}
       </View>
-      <Text>HabitTackerScreen</Text>
       <FloatingButton />
     </View>
 

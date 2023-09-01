@@ -1,5 +1,5 @@
 export default todoData = {
-  '2023-08-29': [
+  '2023-08-28': [
     {
       todoId: '2023-08-29-1',
       recurringId: '2023-08-31T11:19:40.763Z',
@@ -33,14 +33,14 @@ export default todoData = {
       repeatType: 'norepeat',
     },
   ],
-  '2023-08-28': [
+  '2023-08-29': [
     {
       todoId: '2023-08-28-1',
-      recurringId: '2023-08-31T15:19:40.763Z',
-      todoName: 'marketing',
-      description: 'brought vegetables',
+      recurringId: '2023-09-01T15:12:40.763Z',
+      todoName: 'study react native',
+      description: 'study react native',
       completed: true,
-      repeatType: 'norepeat',
+      repeatType: 'oneWeek',
     },
     {
       todoId: '2023-08-28-2',
@@ -57,6 +57,36 @@ export default todoData = {
       description: 'give pg rent',
       completed: true,
       repeatType: 'norepeat',
+    },
+  ],
+  '2023-08-30': [
+    {
+      todoId: '2023-08-30-1',
+      recurringId: '2023-09-01T15:12:40.763Z',
+      todoName: 'study react native',
+      description: 'study react native',
+      completed: true,
+      repeatType: 'oneWeek',
+    },
+  ],
+  '2023-08-31': [
+    {
+      todoId: '2023-08-31-1',
+      recurringId: '2023-09-01T15:12:40.763Z',
+      todoName: 'study react native',
+      description: 'study react native',
+      completed: false,
+      repeatType: 'oneWeek',
+    },
+  ],
+  '2023-09-01': [
+    {
+      todoId: '2023-09-01-1',
+      recurringId: '2023-09-01T15:12:40.763Z',
+      todoName: 'study react native',
+      description: 'study react native',
+      completed: true,
+      repeatType: 'oneWeek',
     },
   ],
 };
