@@ -49,6 +49,16 @@ function Todo({todo, selectedDate}) {
     );
   }
 
+  function deleteAllUnfinishedRecurringTodo() {
+    toggleDeleteAlertModal();
+    dispatch(
+      todoSlice.actions.DeleteAllUnfinishedRecurringTodo({
+        recurringId: todo.recurringId,
+        completed: todo.completed,
+      }),
+    );
+  }
+
   function checkboxPressHandler() {
     dispatch(
       todoSlice.actions.setCompleteStatus({
@@ -178,7 +188,9 @@ function Todo({todo, selectedDate}) {
                 All Future Recurrences
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.deleteOptionInnerContainer}>
+            <TouchableOpacity
+              style={styles.deleteOptionInnerContainer}
+              onPress={deleteAllUnfinishedRecurringTodo}>
               <MaterialCommunityIcons
                 name="checkbox-blank-circle-outline"
                 size={24}

@@ -45,6 +45,22 @@ export const todoSlice = createSlice({
         }
       }
     },
+    DeleteAllUnfinishedRecurringTodo: (state, action) => {
+      const {recurringId, completed} = action.payload;
+      for (const dateKey in state.todoData) {
+        if (Object.hasOwnProperty.call(state.todoData, dateKey)) {
+          state.todoData[dateKey] = state.todoData[dateKey].filter(item => {
+            return (
+              item.recurringId !== recurringId ||
+              (item.recurringId === recurringId && item.completed)
+            );
+          });
+          if (state.todoData[dateKey].length === 0) {
+            delete state.todoData[dateKey];
+          }
+        }
+      }
+    },
     AddTodo: (state, action) => {
       const {selectedDate, todoText, todoDescText, repeatType, recurringId} =
         action.payload;
