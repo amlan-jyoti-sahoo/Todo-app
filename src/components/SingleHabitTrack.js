@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import {useSelector} from 'react-redux';
 import {currentDate, currentDayIndex} from '../data/DateData';
+import Colors from '../styles/Colors';
 
 const SingleHabitTrack = ({uniqueTodoReccuringId, todoName}) => {
   const todo = useSelector(state => state.todo.todoData);
@@ -42,7 +43,7 @@ const SingleHabitTrack = ({uniqueTodoReccuringId, todoName}) => {
   return (
     <View style={styles.singleHabitContainer}>
       <View style={styles.habitNameContainer}>
-        <Text style={GlobalStyles.textSemiBold}>{todoName}</Text>
+        <Text style={GlobalStyles.textNormal}>{todoName}</Text>
       </View>
       <View style={styles.weekTackerRootContainer}>
         <View style={styles.weekTackerContainer}>
@@ -99,6 +100,7 @@ export default SingleHabitTrack;
 const styles = StyleSheet.create({
   singleHabitContainer: {
     width: '100%',
+    borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -120,14 +122,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   completedContainer: {
-    height: 18,
-    width: 18,
+    height: 17,
+    width: 17,
     borderRadius: 3,
     backgroundColor: Colors.Secondary300,
   },
   inCompletedContainer: {
-    height: 18,
-    width: 18,
+    height: 17,
+    width: 17,
     borderRadius: 3,
     backgroundColor: 'grey',
   },

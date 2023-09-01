@@ -10,11 +10,10 @@ import {currentDayIndex} from '../data/DateData';
 const HabitTackerScreen = () => {
   const todo = useSelector(state => state.todo.todoData);
 
-  // Create a Set to store unique todo names
+  //unique habit extract
   const uniqueTodo = new Set();
-  const recurringIdToNameMap = {}; // Object to store recurring IDs and their names
+  const recurringIdToNameMap = {};
 
-  // Iterate through each date key in the todoData object
   for (const dateKey in todo) {
     if (Object.hasOwnProperty.call(todo, dateKey)) {
       const todos = todo[dateKey];
@@ -28,96 +27,42 @@ const HabitTackerScreen = () => {
     }
   }
 
-  // Convert the Set to an array if needed
+  // Convert the Set to an array
   const uniqueTodoArray = Array.from(uniqueTodo);
+  const reversedUniqueTodoArray = uniqueTodoArray.reverse();
 
+  //single habitstatus box
   const currDayIndex = currentDayIndex();
+  function habitStatusBox(index, title) {
+    return (
+      <View
+        style={
+          currDayIndex == index
+            ? styles.daySelectedContainer
+            : styles.dayNotSelectedContainer
+        }>
+        <Text style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
+          {title}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.headerDayNameRootContainer}>
           <View style={styles.headerDayNameContainer}>
-            <View
-              style={
-                currDayIndex == 0
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Mon
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 1
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Tue
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 2
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Wed
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 3
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Thu
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 4
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Fri
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 5
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Sat
-              </Text>
-            </View>
-            <View
-              style={
-                currDayIndex == 6
-                  ? styles.daySelectedContainer
-                  : styles.dayNotSelectedContainer
-              }>
-              <Text
-                style={[GlobalStyles.textSemiBold, styles.headerDayNameText]}>
-                Sun
-              </Text>
-            </View>
+            {habitStatusBox(0, 'Mon')}
+            {habitStatusBox(1, 'Tue')}
+            {habitStatusBox(2, 'Wed')}
+            {habitStatusBox(3, 'Thu')}
+            {habitStatusBox(4, 'Fri')}
+            {habitStatusBox(5, 'Sat')}
+            {habitStatusBox(6, 'Sun')}
           </View>
         </View>
-        {uniqueTodoArray.map((uniqueTodoReccuringId, index) => (
+        {reversedUniqueTodoArray.map((uniqueTodoReccuringId, index) => (
           <SingleHabitTrack
             key={index}
             uniqueTodoReccuringId={uniqueTodoReccuringId}
@@ -125,10 +70,7 @@ const HabitTackerScreen = () => {
           />
         ))}
       </View>
-      <FloatingButton />
     </View>
-
-    // Floating Button
   );
 };
 
@@ -142,6 +84,9 @@ const styles = StyleSheet.create({
   mainContainer: {
     width: '100%',
     padding: 20,
+    borderRadius: 10,
+
+    backgroundColor: Colors.Primary500,
   },
   headerDayNameRootContainer: {
     width: '100%',
@@ -160,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Secondary500,
     height: 23,
     width: 23,
-    borderRadius: 10,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 1,
@@ -172,5 +117,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 1,
   },
-  headerDayNameText: {fontSize: 10},
+  headerDayNameText: {fontSize: 8},
 });
