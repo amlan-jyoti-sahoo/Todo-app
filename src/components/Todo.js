@@ -185,7 +185,7 @@ function Todo({todo, selectedDate}) {
                 color={'grey'}
               />
               <Text style={[GlobalStyles.textSemiBold, styles.optionText]}>
-                All Future Recurrences
+                All Recurrences Tasks
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

@@ -11,11 +11,9 @@ import {Calendar} from 'react-native-calendars';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {RadioButton} from 'react-native-paper';
 import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
 import moment from 'moment-timezone';
 
-import tempData from '../data/todoData';
 import Month, {currentDate} from '../data/DateData';
 import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
@@ -241,10 +239,18 @@ const AllTodoScreen = ({navigation}) => {
                 justifyContent: 'space-evenly',
                 width: 150,
               }}>
-              <TouchableOpacity onPress={toggleDateModal}>
+              <TouchableOpacity
+                onPress={toggleDateModal}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                }}>
                 <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
+                <Text style={{color: Colors.Secondary500, marginLeft: 10}}>
+                  {selectedDate === currentDate ? 'Today' : selectedDate}
+                </Text>
               </TouchableOpacity>
-              <Text style={{color: Colors.Secondary500}}>{selectedDate}</Text>
               <Icon name={'flag'} size={24} color="#a7a7a7" />
             </View>
             <TouchableOpacity
