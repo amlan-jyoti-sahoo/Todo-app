@@ -10,6 +10,16 @@ import {currentDayIndex} from '../data/DateData';
 const HabitTackerScreen = () => {
   const todo = useSelector(state => state.todo.todoData);
 
+  const HabitStatusColors = [
+    '#7766bb',
+    '#0b8cef',
+    '#76b5c5',
+    '#e28743',
+    '#eab676',
+    '#ff9bad',
+    '#fedf68',
+  ];
+
   //unique habit extract
   const uniqueTodo = new Set();
   const recurringIdToNameMap = {};

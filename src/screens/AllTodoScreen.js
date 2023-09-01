@@ -21,6 +21,7 @@ import TodoRender from '../components/TodoRender';
 import SetRepeat from '../components/SetRepeat';
 import {useDispatch, useSelector} from 'react-redux';
 import {todoSlice} from '../store/todoSlice';
+import GlobalStyles from '../styles/GlobalStyles';
 const AllTodoScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const todo = useSelector(state => state.todo.todoData);
@@ -236,7 +237,7 @@ const AllTodoScreen = ({navigation}) => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-evenly',
+                justifyContent: 'flex-start',
                 width: 150,
               }}>
               <TouchableOpacity
@@ -251,7 +252,6 @@ const AllTodoScreen = ({navigation}) => {
                   {selectedDate === currentDate ? 'Today' : selectedDate}
                 </Text>
               </TouchableOpacity>
-              <Icon name={'flag'} size={24} color="#a7a7a7" />
             </View>
             <TouchableOpacity
               onPress={AddTodoHandler}
@@ -269,6 +269,42 @@ const AllTodoScreen = ({navigation}) => {
                 <Icon name={'send'} size={22} color="white" />
               </View>
             </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              height: 40,
+              width: 220,
+              marginTop: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                height: 35,
+                width: 100,
+                borderRadius: 50,
+                borderWidth: 3,
+                borderColor: Colors.Secondary500,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={GlobalStyles.textButton}>Todo</Text>
+            </View>
+            <View
+              style={{
+                height: 35,
+                width: 100,
+                borderRadius: 50,
+                borderWidth: 3,
+                borderColor: 'grey',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={[GlobalStyles.textButton, {color: 'grey'}]}>
+                Habit
+              </Text>
+            </View>
           </View>
         </View>
       </Modal>

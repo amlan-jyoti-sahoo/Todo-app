@@ -11,3 +11,13 @@ export default Colors = {
   PrimaryTextColor: '#FFFFFF',
   error: 'red',
 };
+
+export const HabitStatusColors = [
+  '#7766bb',
+  '#0b8cef',
+  '#76b5c5',
+  '#e28743',
+  '#eab676',
+  '#ff9bad',
+  '#fedf68',
+];
