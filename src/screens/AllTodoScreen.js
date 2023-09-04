@@ -1,17 +1,9 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Calendar} from 'react-native-calendars';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {WeekCalendarRef, WeekCalendar} from 'react-native-scrollable-calendars';
+import {WeekCalendar} from 'react-native-scrollable-calendars';
 import moment from 'moment-timezone';
 
 import Month, {currentDate} from '../data/DateData';
@@ -19,15 +11,10 @@ import FloatingButton from '../components/UI/FloatingButton';
 import Colors from '../styles/Colors';
 import TodoRender from '../components/TodoRender';
 import SetRepeat from '../components/SetRepeat';
-import {useDispatch, useSelector} from 'react-redux';
-import {todoSlice} from '../store/todoSlice';
-import GlobalStyles from '../styles/GlobalStyles';
+import {useSelector} from 'react-redux';
+import AddTodo from '../components/AddTodo';
 const AllTodoScreen = ({navigation}) => {
-  const dispatch = useDispatch();
   const todo = useSelector(state => state.todo.todoData);
-
-  const [todoText, setTodoText] = useState('');
-  const [todoDescText, setTodoDescText] = useState('');
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDateModalVisible, setDateModalVisible] = useState(false);
@@ -91,23 +78,6 @@ const AllTodoScreen = ({navigation}) => {
   const toggleCalendarModal = () => {
     setCalendarModalVisible(!isCalendarModalVisible);
   };
-
-  function AddTodoHandler() {
-    const recurringTime = new Date();
-    dispatch(
-      todoSlice.actions.AddTodo({
-        selectedDate: selectedDate,
-        todoText: todoText,
-        todoDescText: todoDescText,
-        repeatType: repeatType,
-        recurringId: `${recurringTime}`,
-      }),
-    );
-    setTodoText('');
-    setTodoDescText('');
-    setRepeatType('norepeat');
-    toggleModal();
-  }
 
   const markedDates = {};
   Object.keys(todo).forEach(date => {
@@ -203,110 +173,14 @@ const AllTodoScreen = ({navigation}) => {
         isVisible={isModalVisible}
         animationIn="fadeIn"
         animationOut="fadeOut">
-        <TouchableOpacity
-          style={styles.closeIconContainer}
-          onPress={toggleModal}>
-          <Icon
-            style={styles.closeIcon}
-            name="close"
-            size={30}
-            color={Colors.white}
-          />
-        </TouchableOpacity>
-        <View style={styles.modalContent}>
-          <TextInput
-            style={{marginRight: 20, color: Colors.PrimaryTextColor}}
-            placeholder="Enter your todo..."
-            placeholderTextColor="#636363"
-            value={todoText}
-            onChangeText={setTodoText}
-          />
-          <TextInput
-            style={{marginRight: 20, color: Colors.PrimaryTextColor}}
-            placeholder="Description"
-            placeholderTextColor="#636363"
-            value={todoDescText}
-            onChangeText={setTodoDescText}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                width: 150,
-              }}>
-              <TouchableOpacity
-                onPress={toggleDateModal}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                }}>
-                <Icon name={'calendar'} size={24} color={Colors.Secondary500} />
-                <Text style={{color: Colors.Secondary500, marginLeft: 10}}>
-                  {selectedDate === currentDate ? 'Today' : selectedDate}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              onPress={AddTodoHandler}
-              disabled={todoText === ''}
-              style={todoText === '' ? {opacity: 0.5} : null}>
-              <View
-                style={{
-                  width: 40,
-                  height: 30,
-                  backgroundColor: Colors.Secondary500,
-                  borderRadius: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Icon name={'send'} size={22} color="white" />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: 40,
-              width: 220,
-              marginTop: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                height: 35,
-                width: 100,
-                borderRadius: 50,
-                borderWidth: 3,
-                borderColor: Colors.Secondary500,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={GlobalStyles.textButton}>Todo</Text>
-            </View>
-            <View
-              style={{
-                height: 35,
-                width: 100,
-                borderRadius: 50,
-                borderWidth: 3,
-                borderColor: 'grey',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={[GlobalStyles.textButton, {color: 'grey'}]}>
-                Habit
-              </Text>
-            </View>
-          </View>
-        </View>
+        <AddTodo
+          toggleModal={toggleModal}
+          toggleDateModal={toggleDateModal}
+          selectedDate={selectedDate}
+          repeatType={repeatType}
+          setRepeatType={setRepeatType}
+          toggleRepeatModal={toggleRepeatModal}
+        />
       </Modal>
 
       {/* InnerCalendar Date Picker */}
@@ -350,37 +224,7 @@ const AllTodoScreen = ({navigation}) => {
               monthTextColor: Colors.white,
             }}
           />
-          <View>
-            <TouchableOpacity onPress={toggleRepeatModal} animationIn="fadeIn">
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  borderRadius: 10,
-                  padding: 10,
-                  backgroundColor: Colors.Primary800,
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Icon
-                    style={{marginRight: 10}}
-                    name="repeat"
-                    size={30}
-                    color={Colors.Secondary500}
-                  />
-                  <Text style={styles.constantText}> Set Repeat</Text>
-                </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.constantText}>{repeatType}</Text>
-                  <AntIcon
-                    style={{marginLeft: 20}}
-                    name="right"
-                    size={16}
-                    color={Colors.Secondary500}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
+
           <View
             style={{
               flexDirection: 'row',
