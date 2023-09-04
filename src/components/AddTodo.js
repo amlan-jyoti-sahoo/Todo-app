@@ -57,7 +57,10 @@ const AddTodo = ({
       </TouchableOpacity>
       <View style={styles.modalContent}>
         <TextInput
-          style={{marginRight: 20, color: Colors.PrimaryTextColor}}
+          style={{
+            marginRight: 20,
+            color: Colors.PrimaryTextColor,
+          }}
           placeholder="Enter your todo..."
           placeholderTextColor="#636363"
           value={todoText}
