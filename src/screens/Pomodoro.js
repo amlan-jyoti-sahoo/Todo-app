@@ -16,7 +16,12 @@ const data = [
   {
     title: 'In turpis',
     body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-    imgUrl: 'https://picsum.photos/id/10/200/300',
+    imgUrl: 'https://picsum.photos/id/12/200/300',
+  },
+  {
+    title: 'In turpis',
+    body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+    imgUrl: 'https://picsum.photos/id/11/200/300',
   },
   {
     title: 'In turpis',
@@ -26,17 +31,12 @@ const data = [
   {
     title: 'In turpis',
     body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-    imgUrl: 'https://picsum.photos/id/10/200/300',
+    imgUrl: 'https://picsum.photos/id/12/200/300',
   },
   {
     title: 'In turpis',
     body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-    imgUrl: 'https://picsum.photos/id/10/200/300',
-  },
-  {
-    title: 'In turpis',
-    body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-    imgUrl: 'https://picsum.photos/id/10/200/300',
+    imgUrl: 'https://picsum.photos/id/11/200/300',
   },
 
   {
@@ -47,12 +47,12 @@ const data = [
   {
     title: 'In turpis',
     body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-    imgUrl: 'https://picsum.photos/id/10/200/300',
+    imgUrl: 'https://picsum.photos/id/12/200/300',
   },
   {
     title: 'Lorem Ipsum',
     body: 'Phasellus ullamcorper ipsum rutrum nunc. Nullam quis ante. Etiam ultricies nisi vel augue. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc.',
-    imgUrl: 'https://picsum.photos/id/12/200/300',
+    imgUrl: 'https://picsum.photos/id/11/200/300',
   },
 ];
 
@@ -67,8 +67,8 @@ const Pomodoro = () => {
     return (
       <View style={styles.container} key={index}>
         <Image source={{uri: item.imgUrl}} style={styles.image} />
-        <Text style={styles.header}>{item.title}</Text>
-        <Text style={styles.body}>{item.body}</Text>
+        {/* <Text style={styles.header}>{item.title}</Text>
+        <Text style={styles.body}>{item.body}</Text> */}
       </View>
     );
   };
@@ -85,86 +85,87 @@ const Pomodoro = () => {
   }, [index]);
 
   return (
-    <View>
-      <Carousel
-        layout="tinder"
-        layoutCardOffset={9}
-        ref={isCarousel}
-        data={data}
-        renderItem={CarouselCardItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-        onSnapToItem={index => {
-          setIndex(index);
-        }}
-        useScrollView={true}
-      />
-      <View style={styles.paginationContainer}>
-        <View style={styles.paginationDotContainer}>
-          {index + 1 === 1 ? (
-            <>
-              <View style={styles.dotActive}>
-                <Text style={styles.paginationText}>{`${index + 1}/${
-                  data.length
-                }`}</Text>
-              </View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActive}></View>
-            </>
-          ) : index + 1 === 2 ? (
-            <>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotActive}>
-                <Text style={styles.paginationText}>{`${index + 1}/${
-                  data.length
-                }`}</Text>
-              </View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActive}></View>
-            </>
-          ) : index + 1 === data.length - 1 ? (
-            <>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotActive}>
-                <Text style={styles.paginationText}>{`${index + 1}/${
-                  data.length
-                }`}</Text>
-              </View>
-              <View style={styles.dotInActiveNear}></View>
-            </>
-          ) : index + 1 === data.length ? (
-            <>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotActive}>
-                <Text style={styles.paginationText}>{`${index + 1}/${
-                  data.length
-                }`}</Text>
-              </View>
-            </>
-          ) : (
-            <>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotActive}>
-                <Text style={styles.paginationText}>{`${index + 1}/${
-                  data.length
-                }`}</Text>
-              </View>
-              <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActive}></View>
-            </>
-          )}
+    <View style={styles.rootContainer}>
+      <View>
+        <Carousel
+          layout="default"
+          layoutCardOffset={9}
+          ref={isCarousel}
+          data={data}
+          renderItem={CarouselCardItem}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+          onSnapToItem={index => {
+            setIndex(index);
+          }}
+          useScrollView={true}
+        />
+        <View style={styles.paginationContainer}>
+          <View style={styles.paginationDotContainer}>
+            {index + 1 === 1 ? (
+              <>
+                <View style={styles.dotActive}>
+                  <Text style={styles.paginationText}>{`${index + 1}/${
+                    data.length
+                  }`}</Text>
+                </View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActive}></View>
+              </>
+            ) : index + 1 === 2 ? (
+              <>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotActive}>
+                  <Text style={styles.paginationText}>{`${index + 1}/${
+                    data.length
+                  }`}</Text>
+                </View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActive}></View>
+              </>
+            ) : index + 1 === data.length - 1 ? (
+              <>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotActive}>
+                  <Text style={styles.paginationText}>{`${index + 1}/${
+                    data.length
+                  }`}</Text>
+                </View>
+                <View style={styles.dotInActiveNear}></View>
+              </>
+            ) : index + 1 === data.length ? (
+              <>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotActive}>
+                  <Text style={styles.paginationText}>{`${index + 1}/${
+                    data.length
+                  }`}</Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View style={styles.dotInActive}></View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotActive}>
+                  <Text style={styles.paginationText}>{`${index + 1}/${
+                    data.length
+                  }`}</Text>
+                </View>
+                <View style={styles.dotInActiveNear}></View>
+                <View style={styles.dotInActive}></View>
+              </>
+            )}
+          </View>
         </View>
-      </View>
-      {/* <Pagination
+        {/* <Pagination
         dotsLength={data.length}
         activeDotIndex={index}
         carouselRef={isCarousel}
@@ -179,6 +180,7 @@ const Pomodoro = () => {
         inactiveDotScale={0.6}
         tappableDots={true}
       /> */}
+      </View>
     </View>
   );
 };
@@ -186,11 +188,13 @@ const Pomodoro = () => {
 export default Pomodoro;
 
 const styles = StyleSheet.create({
+  rootContainer: {flex: 1},
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#b80a0a',
     borderRadius: 8,
-    width: 300,
-    paddingBottom: 40,
+    height: 200,
+    marginTop: 20,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -201,8 +205,8 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   image: {
-    width: 300,
-    height: 300,
+    width: '100%',
+    height: '100%',
   },
   header: {
     color: '#222',
