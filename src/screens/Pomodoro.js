@@ -125,8 +125,9 @@ const Pomodoro = () => {
               <View style={styles.dotInActive}></View>
               <View style={styles.dotInActive}></View>
             </>
-          ) : index + 1 === 3 ? (
+          ) : index + 1 === data.length - 1 ? (
             <>
+              <View style={styles.dotInActive}></View>
               <View style={styles.dotInActive}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
@@ -135,31 +136,30 @@ const Pomodoro = () => {
                 }`}</Text>
               </View>
               <View style={styles.dotInActiveNear}></View>
-              <View style={styles.dotInActive}></View>
             </>
-          ) : index + 1 === 4 ? (
+          ) : index + 1 === data.length ? (
             <>
               <View style={styles.dotInActive}></View>
               <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
                 <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
-              <View style={styles.dotInActiveNear}></View>
             </>
           ) : (
             <>
               <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActive}></View>
-              <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
                 <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActive}></View>
             </>
           )}
         </View>
