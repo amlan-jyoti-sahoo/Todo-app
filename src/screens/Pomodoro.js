@@ -74,18 +74,17 @@ const Pomodoro = () => {
       </View>
     );
   };
-  // useEffect(() => {
-  //   const autoScrollInterval = setInterval(() => {
-  //     // Calculate the next index, loop back to 0 if it reaches the end
-  //     const nextIndex = (index + 1) % data.length;
-  //     setIndex(nextIndex);
-  //     isCarousel.current.snapToItem(nextIndex);
-  //   }, 3000); // Change the interval time (in milliseconds) as needed
+  useEffect(() => {
+    const autoScrollInterval = setInterval(() => {
+      const nextIndex = (index + 1) % data.length;
+      setIndex(nextIndex);
+      isCarousel.current.snapToItem(nextIndex);
+    }, 2000);
 
-  //   return () => {
-  //     clearInterval(autoScrollInterval);
-  //   };
-  // }, [index]);
+    return () => {
+      clearInterval(autoScrollInterval);
+    };
+  }, [index]);
 
   return (
     <View>
@@ -108,7 +107,7 @@ const Pomodoro = () => {
           {index + 1 === 1 ? (
             <>
               <View style={styles.dotActive}>
-                <Text style={{color: 'black'}}>{`${index + 1}/${
+                <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
@@ -121,7 +120,7 @@ const Pomodoro = () => {
             <>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
-                <Text style={{color: 'black'}}>{`${index + 1}/${
+                <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
@@ -134,7 +133,7 @@ const Pomodoro = () => {
               <View style={styles.dotInActive}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
-                <Text style={{color: 'black'}}>{`${index + 1}/${
+                <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
@@ -147,7 +146,7 @@ const Pomodoro = () => {
               <View style={styles.dotInActive}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
-                <Text style={{color: 'black'}}>{`${index + 1}/${
+                <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
@@ -160,7 +159,7 @@ const Pomodoro = () => {
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotInActiveNear}></View>
               <View style={styles.dotActive}>
-                <Text style={{color: 'black'}}>{`${index + 1}/${
+                <Text style={styles.paginationText}>{`${index + 1}/${
                   data.length
                 }`}</Text>
               </View>
@@ -232,7 +231,6 @@ const styles = StyleSheet.create({
     height: '100%',
     minWidth: 120,
     marginTop: 20,
-    backgroundColor: 'yellow',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -241,10 +239,11 @@ const styles = StyleSheet.create({
     height: 20,
     width: 45,
     borderRadius: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#151515',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  paginationText: {color: '#ffffff', fontSize: 12, fontWeight: '600'},
   dotInActiveNear: {
     height: 10,
     width: 10,
@@ -259,7 +258,7 @@ const styles = StyleSheet.create({
     width: 5,
     borderRadius: 50,
     marginHorizontal: 3,
-    backgroundColor: '#a09d9d',
+    backgroundColor: '#cac4c4',
     alignItems: 'center',
     justifyContent: 'center',
   },
