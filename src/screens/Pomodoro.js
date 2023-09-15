@@ -1,127 +1,188 @@
-import React, {Component, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  StatusBar,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
-
-import {Picker} from '@react-native-picker/picker';
-
-const screen = Dimensions.get('window');
-
-const formatNumber = number => `0${number}`.slice(-2);
-
-const getRemaining = time => {
-  const minutes = Math.floor(time / 60);
-  const seconds = time - minutes * 60;
-  return {minutes: formatNumber(minutes), seconds: formatNumber(seconds)};
-};
-
-const createArray = length => {
-  const arr = [];
-  let i = 0;
-  while (i < length) {
-    arr.push(i.toString());
-    i += 1;
-  }
-  return arr;
-};
-
-const AVAILABLE_MINUTES = createArray(10);
-const AVAILABLE_SECONDS = createArray(60);
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 const Pomodoro = () => {
-  const [remainingSeconds, setRemainingSeconds] = useState(5);
-  const [isRunning, setIsRunning] = useState(false);
-  const [selectedMinutes, setSelectedMinutes] = useState('0');
-  const [selectedSeconds, setSelectedSeconds] = useState('5');
+  const isCarousel = React.useRef(null);
 
-  interval = null;
+  const data = [
+    {
+      title: 'Aenean leo',
+      body: 'Ut tincidunt tincidunt erat. Sed cursus turpis vitae tortor. Quisque malesuada placerat nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.',
+      imgUrl: 'https://picsum.photos/id/11/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
 
-  componentDidUpdate = (prevProp, prevState) => {
-    if (remainingSeconds === 0 && prevState.remainingSeconds !== 0) {
-      stop();
-    }
-  };
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'In turpis',
+      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
+      imgUrl: 'https://picsum.photos/id/10/200/300',
+    },
+    {
+      title: 'Lorem Ipsum',
+      body: 'Phasellus ullamcorper ipsum rutrum nunc. Nullam quis ante. Etiam ultricies nisi vel augue. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc.',
+      imgUrl: 'https://picsum.photos/id/12/200/300',
+    },
+  ];
 
-  const componentWillUnmount = () => {
-    if (interval) {
-      clearInterval(interval);
-    }
-  };
+  const [index, setIndex] = React.useState(0);
+  const [nextIndex, setnextIndex] = React.useState(index + 1);
 
-  start = () => {
-    setRemainingSeconds(
-      parseInt(selectedMinutes, 10) * 60 + parseInt(selectedSeconds, 30),
+  const SLIDER_WIDTH = Dimensions.get('window').width + 80;
+  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+
+  const CarouselCardItem = ({item, index}) => {
+    return (
+      <View style={styles.container} key={index}>
+        <Image source={{uri: item.imgUrl}} style={styles.image} />
+        <Text style={styles.header}>{item.title}</Text>
+        <Text style={styles.body}>{item.body}</Text>
+      </View>
     );
-    setIsRunning(true);
-
-    interval = setInterval(() => {
-      setRemainingSeconds(remainingSeconds - 1);
-    }, 1000);
   };
+  // useEffect(() => {
+  //   const autoScrollInterval = setInterval(() => {
+  //     // Calculate the next index, loop back to 0 if it reaches the end
+  //     const nextIndex = (index + 1) % data.length;
+  //     setIndex(nextIndex);
+  //     isCarousel.current.snapToItem(nextIndex);
+  //   }, 3000); // Change the interval time (in milliseconds) as needed
 
-  stop = () => {
-    clearInterval(interval);
-    interval = null;
-    setRemainingSeconds(5);
-    setIsRunning(false);
-  };
+  //   return () => {
+  //     clearInterval(autoScrollInterval);
+  //   };
+  // }, [index]);
 
-  renderPickers = () => (
-    <View style={styles.pickerContainer}>
-      <Picker
-        style={styles.picker}
-        itemStyle={styles.pickerItem}
-        selectedValue={selectedMinutes}
-        onValueChange={itemValue => {
-          setSelectedMinutes(itemValue);
-        }}
-        mode="dropDown">
-        {AVAILABLE_MINUTES.map(value => (
-          <Picker.Item key={value} label={value} value={value} />
-        ))}
-      </Picker>
-      <Text style={styles.pickerItem}>minutes</Text>
-      <Picker
-        style={styles.picker}
-        itemStyle={styles.pickerItem}
-        selectedValue={selectedSeconds}
-        onValueChange={itemValue => {
-          setSelectedSeconds(itemValue);
-        }}
-        mode="dropDown">
-        {AVAILABLE_SECONDS.map(value => (
-          <Picker.Item key={value} label={value} value={value} />
-        ))}
-      </Picker>
-      <Text style={styles.pickerItem}>seconds</Text>
-    </View>
-  );
-  const {minutes, seconds} = getRemaining(remainingSeconds);
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      {isRunning ? (
-        <Text style={styles.timerText}>{`${minutes}:${seconds}`}</Text>
-      ) : (
-        renderPickers()
-      )}
-      {isRunning ? (
-        <TouchableOpacity
-          onPress={this.stop}
-          style={[styles.button, styles.buttonStop]}>
-          <Text style={[styles.buttonText, styles.buttonTextStop]}>Stop</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={this.start} style={styles.button}>
-          <Text style={styles.buttonText}>Start</Text>
-        </TouchableOpacity>
-      )}
+    <View>
+      <Carousel
+        layout="tinder"
+        layoutCardOffset={9}
+        ref={isCarousel}
+        data={data}
+        renderItem={CarouselCardItem}
+        sliderWidth={SLIDER_WIDTH}
+        itemWidth={ITEM_WIDTH}
+        onSnapToItem={index => {
+          setIndex(index);
+          setnextIndex(index + 1);
+        }}
+        useScrollView={true}
+      />
+      <View style={styles.paginationContainer}>
+        <View style={styles.paginationDotContainer}>
+          {index + 1 === 1 ? (
+            <>
+              <View style={styles.dotActive}>
+                <Text style={{color: 'black'}}>{`${index + 1}/${
+                  data.length
+                }`}</Text>
+              </View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActive}></View>
+            </>
+          ) : index + 1 === 2 ? (
+            <>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotActive}>
+                <Text style={{color: 'black'}}>{`${index + 1}/${
+                  data.length
+                }`}</Text>
+              </View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActive}></View>
+            </>
+          ) : index + 1 === 3 ? (
+            <>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotActive}>
+                <Text style={{color: 'black'}}>{`${index + 1}/${
+                  data.length
+                }`}</Text>
+              </View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActive}></View>
+            </>
+          ) : index + 1 === 4 ? (
+            <>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotActive}>
+                <Text style={{color: 'black'}}>{`${index + 1}/${
+                  data.length
+                }`}</Text>
+              </View>
+              <View style={styles.dotInActiveNear}></View>
+            </>
+          ) : (
+            <>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActive}></View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotInActiveNear}></View>
+              <View style={styles.dotActive}>
+                <Text style={{color: 'black'}}>{`${index + 1}/${
+                  data.length
+                }`}</Text>
+              </View>
+            </>
+          )}
+        </View>
+      </View>
+      {/* <Pagination
+        dotsLength={data.length}
+        activeDotIndex={index}
+        carouselRef={isCarousel}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 0,
+          backgroundColor: 'red',
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+        tappableDots={true}
+      /> */}
     </View>
   );
 };
@@ -130,57 +191,76 @@ export default Pomodoro;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#07121B',
-    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    width: 300,
+    paddingBottom: 40,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  image: {
+    width: 300,
+    height: 300,
+  },
+  header: {
+    color: '#222',
+    fontSize: 28,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingTop: 20,
+  },
+  body: {
+    color: '#222',
+    fontSize: 18,
+    paddingLeft: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  paginationContainer: {
+    width: '100%',
+    height: 20,
     justifyContent: 'center',
-  },
-  button: {
-    borderWidth: 10,
-    borderColor: '#89AAFF',
-    width: screen.width / 2,
-    height: screen.width / 2,
-    borderRadius: screen.width / 2,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 30,
   },
-  buttonStop: {
-    borderColor: '#FF851B',
-  },
-  buttonText: {
-    fontSize: 45,
-    color: '#89AAFF',
-  },
-  buttonTextStop: {
-    color: '#FF851B',
-  },
-  timerText: {
-    color: '#fff',
-    fontSize: 90,
-  },
-  picker: {
-    flex: 1,
-    maxWidth: 100,
-    ...Platform.select({
-      android: {
-        color: '#fff',
-        backgroundColor: 'rgba(92, 92, 92, 0.206)',
-      },
-    }),
-  },
-  pickerItem: {
-    color: '#fff',
-    fontSize: 20,
-    ...Platform.select({
-      android: {
-        marginLeft: 10,
-        marginRight: 10,
-      },
-    }),
-  },
-  pickerContainer: {
+  paginationDotContainer: {
+    height: '100%',
+    minWidth: 120,
+    marginTop: 20,
+    backgroundColor: 'yellow',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  dotActive: {
+    height: 20,
+    width: 45,
+    borderRadius: 50,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dotInActiveNear: {
+    height: 10,
+    width: 10,
+    borderRadius: 50,
+    marginHorizontal: 3,
+    backgroundColor: '#a09d9d',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dotInActive: {
+    height: 5,
+    width: 5,
+    borderRadius: 50,
+    marginHorizontal: 3,
+    backgroundColor: '#a09d9d',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
